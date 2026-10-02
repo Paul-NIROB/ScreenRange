@@ -1,11 +1,13 @@
-   const titles = [
-  { id: 1, name: "Sample Movie One", year: 2023, rating: 8.4 },
-  { id: 2, name: "Sample Movie Two", year: 2022, rating: 7.9 },
-  { id: 3, name: "Sample Series Three", year: 2024, rating: 9.1 },
-  { id: 4, name: "Sample Movie Four", year: 2021, rating: 8.0 },
-];
+   import Image from "next/image";
+import { supabase } from "../lib/supabase";
 
-export default function Home() {
+export default async function Home() {
+  const { data: titles, error } = await supabase
+    .from("titles")
+    .select("id, name, year, poster_path")
+    .order("id")
+    .limit(12);
+
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
       <header className="border-b border-neutral-800 px-6 py-4">
@@ -19,18 +21,28 @@ export default function Home() {
           className="w-full rounded-lg border border-neutral-700 bg-neutral-900 px-4 py-3 outline-none focus:border-purple-500"
         />
 
-        <h2 className="mb-4 mt-10 text-xl font-semibold">
-          Top performances this week
-        </h2>
+        <h2 className="mb-4 mt-10 text-xl font-semibold">Popular titles</h2>
+
+        {error && (
+          <p className="text-red-400">Could not load titles: {error.message}</p>
+        )}
 
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          {titles.map((t) => (
+          {titles?.map((t) => (
             <div key={t.id} className="rounded-lg bg-neutral-900 p-3">
-              <div className="aspect-[2/3] rounded-md bg-neutral-800" />
+              <div className="relative aspect-[2/3] overflow-hidden rounded-md bg-neutral-800">
+                {t.poster_path && (
+                  <Image
+                    src={`https://image.tmdb.org/t/p/w500${t.poster_path}`}
+                    alt={t.name}
+                    fill
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className="object-cover"
+                  />
+                )}
+              </div>
               <p className="mt-3 font-medium">{t.name}</p>
-              <p className="text-sm text-neutral-400">
-                {t.year} · ★ {t.rating.toFixed(1)}
-              </p>
+              <p className="text-sm text-neutral-400">{t.year}</p>
             </div>
           ))}
         </div>
