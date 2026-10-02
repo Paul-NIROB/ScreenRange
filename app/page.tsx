@@ -1,4 +1,5 @@
-   import Image from "next/image";
+import Image from "next/image";
+import Link from "next/link";
 import { supabase } from "../lib/supabase";
 
 export default async function Home() {
@@ -29,7 +30,11 @@ export default async function Home() {
 
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {titles?.map((t) => (
-            <div key={t.id} className="rounded-lg bg-neutral-900 p-3">
+            <Link
+              key={t.id}
+              href={`/title/${t.id}`}
+              className="rounded-lg bg-neutral-900 p-3 transition hover:bg-neutral-800"
+            >
               <div className="relative aspect-[2/3] overflow-hidden rounded-md bg-neutral-800">
                 {t.poster_path && (
                   <Image
@@ -43,7 +48,7 @@ export default async function Home() {
               </div>
               <p className="mt-3 font-medium">{t.name}</p>
               <p className="text-sm text-neutral-400">{t.year}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </main>
