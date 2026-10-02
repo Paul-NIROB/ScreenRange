@@ -29,7 +29,7 @@ export default function Home() {
               <div className="aspect-[2/3] rounded-md bg-neutral-800" />
               <p className="mt-3 font-medium">{t.name}</p>
               <p className="text-sm text-neutral-400">
-                {t.year} · ★ {t.rating}
+                {t.year} · ★ {t.rating.toFixed(1)}
               </p>
             </div>
           ))}
