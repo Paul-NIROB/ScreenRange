@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Header from "../components/Header";
 import Link from "next/link";
 import { supabase } from "../lib/supabase";
 
@@ -11,9 +12,7 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
-      <header className="border-b border-neutral-800 px-6 py-4">
-        <h1 className="text-2xl font-bold">ScreenRange</h1>
-      </header>
+      <Header />
 
       <main className="mx-auto max-w-6xl px-6 py-10">
         <input
