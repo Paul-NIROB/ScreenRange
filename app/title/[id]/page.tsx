@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "../../../components/Header";
 import RatingControl from "../../../components/RatingControl";
+import ReviewForm from "../../../components/ReviewForm";
 import ScreenTimeControl from "../../../components/ScreenTimeControl";
 import { createClient } from "../../../utils/supabase/server";
 
@@ -27,6 +28,14 @@ type TimeRow = {
   cast_role_id: number;
   median_minutes: number | string;
   entry_count: number | string;
+};
+
+type ReviewRow = {
+  id: number;
+  user_id: string;
+  author_name: string;
+  body: string;
+  created_at: string;
 };
 
 export default async function TitlePage({
@@ -101,6 +110,18 @@ export default async function TitlePage({
     );
   }
 
+  const { data: reviewsData } = await supabase
+    .from("reviews")
+    .select("id, user_id, author_name, body, created_at")
+    .eq("title_id", title.id)
+    .order("created_at", { ascending: false })
+    .limit(50);
+
+  const reviews = (reviewsData ?? []) as ReviewRow[];
+  const myReview = user
+    ? (reviews.find((r) => r.user_id === user.id) ?? null)
+    : null;
+
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
       <Header />
@@ -111,7 +132,7 @@ export default async function TitlePage({
         </Link>
 
         <div className="mt-6 flex flex-col gap-8 md:flex-row">
-          <div className="relative aspect-[2/3] w-full max-w-xs shrink-0 overflow-hidden rounded-lg bg-neutral-800">
+          <div className="relative aspect-[2/3] w-full max-w-xs shrink-0 self-start overflow-hidden rounded-lg bg-neutral-800 md:sticky md:top-6">
             {title.poster_path && (
               <Image
                 src={`https://image.tmdb.org/t/p/w500${title.poster_path}`}
@@ -194,6 +215,43 @@ export default async function TitlePage({
                   );
                 })}
               </div>
+            )}
+
+            <h2 className="mt-12 text-xl font-semibold">Reviews</h2>
+
+            <ReviewForm
+              titleId={title.id}
+              initialBody={myReview?.body ?? null}
+              isLoggedIn={!!user}
+            />
+
+            {reviews.length === 0 ? (
+              <p className="mt-4 text-neutral-500">
+                No reviews yet. Be the first to write one.
+              </p>
+            ) : (
+              <ul className="mt-4 space-y-3">
+                {reviews.map((r) => (
+                  <li key={r.id} className="rounded-lg bg-neutral-900 p-4">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-medium">
+                        {r.author_name}
+                        {user && r.user_id === user.id ? " (you)" : ""}
+                      </span>
+                      <span className="text-xs text-neutral-500">
+                        {new Date(r.created_at).toLocaleDateString("en-IN", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </span>
+                    </div>
+                    <p className="mt-2 whitespace-pre-line text-sm text-neutral-300">
+                      {r.body}
+                    </p>
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
         </div>

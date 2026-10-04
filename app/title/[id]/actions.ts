@@ -68,3 +68,65 @@ export async function submitScreenTime(
   revalidatePath(`/title/${titleId}`);
   return { error: null };
 }
+
+export async function saveReview(titleId: number, body: string) {
+  const text = body.trim();
+
+  if (text.length < 10 || text.length > 1000) {
+    return { error: "Review must be between 10 and 1000 characters." };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "Please sign in to write a review." };
+  }
+
+  const fullName = (user.user_metadata?.full_name as string | undefined) ?? "";
+  const authorName = fullName.trim().split(" ")[0] || "Anonymous";
+
+  const { error } = await supabase.from("reviews").upsert(
+    {
+      user_id: user.id,
+      title_id: titleId,
+      author_name: authorName,
+      body: text,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "user_id,title_id" }
+  );
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath(`/title/${titleId}`);
+  return { error: null };
+}
+
+export async function deleteReview(titleId: number) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "Please sign in first." };
+  }
+
+  const { error } = await supabase
+    .from("reviews")
+    .delete()
+    .eq("title_id", titleId)
+    .eq("user_id", user.id);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath(`/title/${titleId}`);
+  return { error: null };
+}
