@@ -6,6 +6,7 @@ import RatingControl from "../../../components/RatingControl";
 import ReviewForm from "../../../components/ReviewForm";
 import ScreenTimeControl from "../../../components/ScreenTimeControl";
 import { createClient } from "../../../utils/supabase/server";
+import AiSummary from "../../../components/AiSummary";
 
 type CastRow = {
   id: number;
@@ -121,6 +122,11 @@ export default async function TitlePage({
   const myReview = user
     ? (reviews.find((r) => r.user_id === user.id) ?? null)
     : null;
+    const { data: summaryRow } = await supabase
+    .from("ai_summaries")
+    .select("summary")
+    .eq("title_id", title.id)
+    .maybeSingle();  
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
@@ -147,6 +153,11 @@ export default async function TitlePage({
           <div className="flex-1">
             <h1 className="text-3xl font-bold">{title.name}</h1>
             <p className="mt-2 text-neutral-400">{title.year}</p>
+            <AiSummary
+  titleId={title.id}
+  initialSummary={summaryRow?.summary ?? null}
+  isLoggedIn={!!user}
+/>
 
             <h2 className="mt-10 text-xl font-semibold">Cast</h2>
 
