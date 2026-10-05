@@ -91,7 +91,7 @@ export default async function Home({
         )}
 
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          {titles?.map((t) => (
+          {titles?.map((t, index) => (
             <Link
               key={t.id}
               href={`/title/${t.id}`}
@@ -105,6 +105,7 @@ export default async function Home({
                     fill
                     sizes="(max-width: 768px) 50vw, 25vw"
                     className="object-cover"
+                    loading={index < 4 ? "eager" : "lazy"}
                   />
                 )}
               </div>

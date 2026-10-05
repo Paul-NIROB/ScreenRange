@@ -177,6 +177,7 @@ export default async function TitlePage({
                         {c.people.profile_path ? (
                           <Image
                             src={`https://image.tmdb.org/t/p/w185${c.people.profile_path}`}
+                            loading="eager"
                             alt={c.people.name}
                             fill
                             sizes="150px"
