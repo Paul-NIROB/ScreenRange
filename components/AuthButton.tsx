@@ -26,7 +26,7 @@ export default function AuthButton({ userName }: { userName: string | null }) {
   if (userName) {
     return (
       <div className="flex items-center gap-3 text-sm">
-        <span className="text-neutral-300">{userName}</span>
+        <span className="hidden text-neutral-300 sm:inline">{userName}</span>
         <button
           onClick={signOut}
           className="rounded-md border border-neutral-700 px-3 py-1.5 hover:bg-neutral-800"

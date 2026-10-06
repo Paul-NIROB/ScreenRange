@@ -13,14 +13,14 @@ export default async function Header() {
     : null;
 
   return (
-    <header className="flex items-center justify-between border-b border-neutral-800 px-6 py-4">
-      <div className="flex items-center gap-6">
-        <Link href="/" className="text-2xl font-bold">
+    <header className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-800 px-4 py-3 sm:px-6 sm:py-4">
+      <div className="flex items-center gap-3 sm:gap-6">
+        <Link href="/" className="text-xl font-bold sm:text-2xl">
           ScreenRange
         </Link>
         <Link
           href="/rankings"
-          className="text-sm text-neutral-400 hover:text-white"
+          className="text-xs text-neutral-400 hover:text-white sm:text-sm"
         >
           Top performances
         </Link>
