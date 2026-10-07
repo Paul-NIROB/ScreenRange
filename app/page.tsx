@@ -7,6 +7,7 @@ import HomeHeroSection, {
 } from "../components/HomeHeroSection";
 import HomeStandoutsSection from "../components/HomeStandoutsSection";
 import HomeTopPerformancesList from "../components/HomeTopPerformancesList";
+import LeaderboardSection from "../components/LeaderboardSection";
 
 export default async function Home({
   searchParams,
@@ -67,6 +68,38 @@ export default async function Home({
           <>
             <HomeHeroSection top={perfRows[0] ?? null} />
             <HomeStandoutsSection rows={perfRows.slice(1, 5)} />
+            <LeaderboardSection
+              tone="heroes"
+              eyebrow="🦸 HEROES"
+              title={
+                <>
+                  Best{" "}
+                  <span className="bg-gradient-to-r from-gold via-gold-soft to-gold bg-clip-text text-transparent">
+                    Heroes
+                  </span>
+                </>
+              }
+              subtitle="The heroes who stole the show."
+              rows={perfRows}
+            />
+            <LeaderboardSection
+              tone="villains"
+              eyebrow="😈 VILLAINS"
+              title={
+                <>
+                  Best{" "}
+                  <span className="bg-gradient-to-r from-purple-300 via-purple-200 to-fuchsia-300 bg-clip-text text-transparent">
+                    Villains
+                  </span>
+                </>
+              }
+              subtitle="The villains we couldn't ignore."
+              rows={perfRows.slice().sort((a, b) => {
+                const wa = Number(a.weighted_score);
+                const wb = Number(b.weighted_score);
+                return wa - wb;
+              })}
+            />
             <HomeTopPerformancesList rows={perfRows.slice(0, 8)} />
           </>
         )}
