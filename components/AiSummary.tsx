@@ -33,71 +33,78 @@ export default function AiSummary({
   }
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-gold/15 bg-gradient-to-br from-gold/8 via-surface to-background-elevated shadow-[0_1px_0_rgba(255,255,255,0.03)_inset]">
+    <div className="relative overflow-hidden rounded-2xl">
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-gold/10 blur-3xl"
+        className="pointer-events-none absolute -inset-px rounded-2xl bg-gradient-to-br from-purple-500/50 via-fuchsia-500/15 to-purple-500/35 opacity-90 blur-[2px]"
       />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-16 -left-12 h-40 w-40 rounded-full bg-gold/5 blur-3xl"
-      />
-      <div className="relative p-5 sm:p-6">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-gold/90 to-gold-muted text-background shadow-[0_0_30px_-10px_rgba(234,190,85,0.6)] sm:h-10 sm:w-10">
-              <span aria-hidden>✨</span>
-            </span>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold">
-                AI Community Summary
-              </p>
-              {summary && (
-                <p className="mt-0.5 text-[11px] text-muted sm:text-xs">
-                  Aggregated from ratings, screen times &amp; reviews
+      <div className="relative overflow-hidden rounded-[calc(1rem-1px)] border border-purple-500/20 bg-gradient-to-br from-purple-500/8 via-surface to-background-elevated shadow-[0_1px_0_rgba(255,255,255,0.03)_inset]">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-purple-500/18 blur-3xl"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -bottom-14 -left-10 h-36 w-36 rounded-full bg-fuchsia-500/10 blur-3xl"
+        />
+        <div className="relative p-4 sm:p-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500/90 to-fuchsia-500/70 text-background shadow-[0_0_30px_-8px_rgba(168,85,247,0.6)] sm:h-9 sm:w-9 sm:rounded-xl">
+                <span aria-hidden className="text-[13px] sm:text-sm">
+                  ✨
+                </span>
+              </span>
+              <div>
+                <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-purple-300/90 sm:text-xs">
+                  AI community summary
                 </p>
-              )}
+                {summary && (
+                  <p className="mt-0.5 text-[11px] text-muted sm:text-xs">
+                    From community ratings, screen times &amp; reviews
+                  </p>
+                )}
+              </div>
             </div>
+            {isLoggedIn && (
+              <button
+                type="button"
+                disabled={isPending}
+                onClick={handleGenerate}
+                className="btn bg-brand text-background hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-60 py-1.5 text-xs sm:py-2 sm:text-sm"
+              >
+                {isPending
+                  ? "Generating…"
+                  : summary
+                    ? "Refresh"
+                    : "Generate"}
+              </button>
+            )}
           </div>
-          {isLoggedIn && (
-            <button
-              type="button"
-              disabled={isPending}
-              onClick={handleGenerate}
-              className="btn btn-gold px-3.5 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm"
-            >
-              {isPending
-                ? "Generating…"
-                : summary
-                  ? "Refresh"
-                  : "Generate"}
-            </button>
-          )}
-        </div>
 
-        {summary ? (
-          <div className="mt-5 rounded-xl border border-border bg-background/60 p-4 sm:p-5">
-            <p className="text-sm leading-relaxed text-foreground/90 sm:text-[15px]">
-              {summary}
+          {summary ? (
+            <div className="mt-4 rounded-xl border border-purple-500/12 bg-background/50 p-4 sm:mt-5 sm:p-5">
+              <p className="text-base leading-relaxed text-foreground/90 sm:text-[15px]">
+                {summary}
+              </p>
+            </div>
+          ) : (
+            <p className="mt-4 rounded-xl border border-dashed border-purple-500/20 bg-background/20 p-4 text-sm text-muted sm:mt-5 sm:p-5">
+              No summary yet. Generate one from this movie&apos;s ratings, screen
+              times and reviews.
             </p>
-          </div>
-        ) : (
-          <p className="mt-5 rounded-xl border border-dashed border-border-strong bg-background/20 p-4 text-sm text-muted sm:p-5">
-            No summary yet. Generate one from this movie&apos;s ratings, screen
-            times and reviews.
-          </p>
-        )}
+          )}
 
-        {error && (
-          <p className="mt-4 rounded-lg bg-danger/10 px-3 py-2 text-sm text-danger">
-            {error}
-          </p>
-        )}
+          {error && (
+            <p className="mt-4 rounded-lg bg-rose-500/10 px-3 py-2 text-sm text-rose-400">
+              {error}
+            </p>
+          )}
 
-        <p className="mt-5 flex items-center gap-1.5 text-xs text-muted sm:text-[13px]">
-          <span aria-hidden>⚠</span> Generated by AI from community data. It may
-          contain mistakes.
-        </p>
+          <p className="mt-4 text-[11px] leading-relaxed text-muted sm:text-xs">
+            Generated by AI from community data. It may contain mistakes.
+          </p>
+        </div>
       </div>
     </div>
   );

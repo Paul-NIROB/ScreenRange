@@ -40,56 +40,75 @@ export default function RatingControl({
     });
   }
 
-  const buttonTone = (n: number) => {
+  type Tone = {
+    base: string;
+    active: string;
+  };
+
+  const buttonTone = (n: number): Tone => {
     if (n >= 8) {
       return {
-        base: "bg-success/8 text-success hover:bg-success/15 hover:text-success border-success/30",
+        base:
+          "bg-surface-hover text-emerald-400 hover:bg-emerald-500/15 hover:text-emerald-300 border border-transparent hover:border-emerald-500/30",
         active:
-          "bg-success text-background border-success shadow-[0_0_0_3px_rgba(49,196,141,0.18)]",
-        tone: "text-success",
+          "bg-emerald-500 text-white border border-emerald-500 shadow-[0_0_0_3px_rgba(16,185,129,0.18)]",
       };
     }
     if (n >= 5) {
       return {
-        base: "bg-gold/8 text-gold hover:bg-gold/18 hover:text-gold-soft border-gold/35",
+        base:
+          "bg-surface-hover text-amber-400 hover:bg-amber-400/15 hover:text-amber-300 border border-transparent hover:border-amber-400/30",
         active:
-          "bg-gold text-background border-gold shadow-[0_0_0_3px_rgba(234,190,85,0.18)]",
-        tone: "text-gold",
+          "bg-amber-400 text-amber-950 border border-amber-400 shadow-[0_0_0_3px_rgba(251,191,36,0.18)]",
       };
     }
     return {
-      base: "bg-danger/8 text-danger hover:bg-danger/16 hover:text-danger border-danger/30",
+      base:
+        "bg-surface-hover text-rose-400 hover:bg-rose-500/15 hover:text-rose-300 border border-transparent hover:border-rose-500/30",
       active:
-        "bg-danger text-background border-danger shadow-[0_0_0_3px_rgba(239,100,97,0.18)]",
-      tone: "text-danger",
+        "bg-rose-500 text-white border border-rose-500 shadow-[0_0_0_3px_rgba(244,63,94,0.18)]",
     };
   };
 
-  const activeTone =
-    score != null ? buttonTone(score).tone : "text-muted";
+  const activeLabelColor =
+    score == null
+      ? "text-muted"
+      : score >= 8
+        ? "text-emerald-400"
+        : score >= 5
+          ? "text-amber-400"
+          : "text-rose-400";
 
   return (
-    <div className="mt-1">
+    <div className="w-full">
       <p className="text-xs font-medium text-muted sm:text-sm">
         {score ? (
           <span>
-            Your rating: <span className={`font-bold ${activeTone}`}>{score}/10</span>
+            Your rating:{" "}
+            <span className={`font-bold ${activeLabelColor}`}>{score}/10</span>
           </span>
         ) : (
           "Rate this performance"
         )}
       </p>
-      <div className="mt-2.5 grid grid-cols-5 gap-1.5 sm:gap-2">
+      <div
+        className="mt-2.5 grid grid-cols-5 gap-1.5 sm:gap-2"
+        role="group"
+        aria-label="Performance rating"
+      >
         {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => {
           const tone = buttonTone(n);
+          const pressed = score === n;
           return (
             <button
               key={n}
               type="button"
               disabled={isPending}
+              aria-label={`Rate ${n} out of 10`}
+              aria-pressed={pressed}
               onClick={() => handleRate(n)}
-              className={`rounded-xl border py-1.5 text-xs font-bold transition-all duration-200 will-change-transform hover:-translate-y-0.5 active:translate-y-0 sm:py-2 sm:text-sm disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 ${
-                score === n ? tone.active : tone.base
+              className={`min-h-10 rounded-lg px-1 py-2 text-sm font-bold transition-all duration-150 active:scale-[0.97] focus:outline-none disabled:cursor-not-allowed disabled:opacity-55 sm:rounded-xl sm:px-1.5 sm:text-[15px] ${
+                pressed ? tone.active : tone.base
               }`}
             >
               {n}
@@ -98,7 +117,7 @@ export default function RatingControl({
         })}
       </div>
       {message && (
-        <p className="mt-2.5 rounded-lg bg-danger/10 px-2.5 py-1.5 text-xs font-medium text-danger">
+        <p className="mt-3 rounded-lg bg-rose-500/10 px-2.5 py-1.5 text-xs font-medium text-rose-400">
           {message}
         </p>
       )}

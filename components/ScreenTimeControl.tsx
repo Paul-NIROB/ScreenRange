@@ -39,12 +39,12 @@ export default function ScreenTimeControl({
   }
 
   return (
-    <div className="mt-1">
+    <div className="w-full">
       <label className="text-xs font-medium text-muted sm:text-sm">
-        Screen-time estimate
+        Report screen time
       </label>
-      <div className="mt-2.5 flex gap-2">
-        <div className="relative flex-1">
+      <div className="mt-2 flex flex-wrap items-center gap-2">
+        <div className="relative flex min-w-0 flex-1">
           <input
             type="number"
             min={1}
@@ -52,9 +52,9 @@ export default function ScreenTimeControl({
             value={value}
             onChange={(e) => setValue(e.target.value)}
             placeholder="e.g. 45"
-            className="input pr-10 py-2 text-sm sm:text-[0.95rem]"
+            className="input w-full min-w-0 pr-10 py-2 sm:py-2.5 text-sm sm:text-[0.95rem]"
           />
-          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-muted-strong">
+          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-semibold uppercase tracking-wider text-muted sm:text-xs">
             min
           </span>
         </div>
@@ -62,17 +62,17 @@ export default function ScreenTimeControl({
           type="button"
           disabled={isPending || value === ""}
           onClick={handleSave}
-          className="btn btn-primary shrink-0 px-4 py-2 text-sm disabled:cursor-not-allowed sm:text-[0.95rem]"
+          className="btn btn-gold py-2 text-xs sm:text-sm"
         >
           {isPending ? "…" : "Save"}
         </button>
       </div>
       {message && (
         <p
-          className={`mt-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium ${
+          className={`mt-3 rounded-lg px-2.5 py-1.5 text-xs font-medium ${
             message === "Saved!"
-              ? "bg-success/10 text-success"
-              : "bg-danger/10 text-danger"
+              ? "bg-emerald-500/10 text-emerald-400"
+              : "bg-rose-500/10 text-rose-400"
           }`}
         >
           {message}
