@@ -115,7 +115,7 @@ export async function generateSummary(titleId: number) {
   if (performances.length === 0 && reviews.length === 0) {
     return {
       error:
-        "Not enough community data yet. Rate a performance or write a review first.",
+        "Not enough community data yet. Give a character a RangeScore or write a review first.",
       summary: null,
     };
   }

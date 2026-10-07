@@ -30,8 +30,8 @@ export default function Footer() {
             </span>
           </Link>
           <p className="mt-3 max-w-sm text-xs leading-relaxed text-muted sm:text-sm">
-            A community-built cinema journal. Rate performances, track screen
-            time, and find out who really stole the show.
+            A community-built cinema journal. Give every character a RangeScore,
+            track screen time, and find out who really stole the show.
           </p>
           <p className="mt-3 text-[11px] text-muted sm:text-xs">
             This product uses the TMDB API but is not endorsed or certified by
@@ -63,7 +63,7 @@ export default function Footer() {
 
       <div className="border-t border-border/70">
         <div className="mx-auto max-w-7xl px-4 py-4 text-center text-[11px] text-muted sm:px-6 sm:text-xs lg:px-8">
-          © {new Date().getFullYear()} ScreenRange · Community ratings &amp;
+          © {new Date().getFullYear()} ScreenRange · Community RangeScores &amp;
           reviews.
         </div>
       </div>

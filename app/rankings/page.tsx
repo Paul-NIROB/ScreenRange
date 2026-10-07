@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Top performances | ScreenRange",
-  description: "The best-rated acting performances, ranked by the community.",
+  description: "The highest RangeScore acting performances, ranked by the community.",
 };
 
 type RankingRow = {
@@ -44,9 +44,9 @@ export default async function RankingsPage() {
             Top <span className="text-gold">performances</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-strong sm:mx-0 sm:text-base">
-            The best-rated acting performances of all time, ranked by the
-            community. Scores with few ratings are pulled toward the site
-            average, so one lucky 10 can&apos;t take the top spot.
+            The highest RangeScore acting performances of all time, ranked by
+            the community. Scores with few ratings are pulled toward the
+            site average, so one lucky 10 can&apos;t take the top spot.
           </p>
         </div>
 
@@ -58,8 +58,8 @@ export default async function RankingsPage() {
 
         {!error && rows.length === 0 && (
           <div className="rounded-2xl border border-dashed border-border-strong bg-surface p-10 text-center text-muted">
-            No ratings yet. Open a movie and rate a performance to start the
-            leaderboard.
+            No RangeScores yet. Open a movie and give a character a RangeScore
+            to start the leaderboard.
           </div>
         )}
 

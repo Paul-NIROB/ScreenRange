@@ -50,7 +50,7 @@ export default function PerfStatsGrid({
   return (
     <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
       <Stat
-        label="Overall rating"
+        label="Overall RangeScore"
         icon={
           <svg
             viewBox="0 0 24 24"

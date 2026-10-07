@@ -61,7 +61,7 @@ export default function AiSummary({
                 </p>
                 {summary && (
                   <p className="mt-0.5 text-[11px] text-muted sm:text-xs">
-                    From community ratings, screen times &amp; reviews
+                    From community RangeScores, screen times &amp; reviews
                   </p>
                 )}
               </div>
@@ -90,7 +90,7 @@ export default function AiSummary({
             </div>
           ) : (
             <p className="mt-4 rounded-xl border border-dashed border-purple-500/20 bg-background/20 p-4 text-sm text-muted sm:mt-5 sm:p-5">
-              No summary yet. Generate one from this movie&apos;s ratings, screen
+              No summary yet. Generate one from this movie&apos;s RangeScores, screen
               times and reviews.
             </p>
           )}

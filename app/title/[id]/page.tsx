@@ -254,8 +254,9 @@ export default async function TitlePage({
                   {title.name}
                 </h1>
                 <p className="mt-4 text-sm leading-relaxed text-muted sm:text-base">
-                  Explore the cast performances, rate each one, add screen-time
-                  estimates, and write a review.
+                  Explore the cast performances, give each character a
+                  RangeScore out of 10, add screen-time estimates, and write a
+                  review.
                 </p>
               </div>
 
@@ -292,7 +293,7 @@ export default async function TitlePage({
                       Performance <span className="text-gold">summary</span>
                     </h2>
                     <p className="mt-1 text-sm text-muted">
-                      Top-billed performance, at a glance.
+                      The lead character&apos;s RangeScore, at a glance.
                     </p>
                   </div>
                 </div>
@@ -377,7 +378,7 @@ export default async function TitlePage({
                 Cast and performances
               </h2>
               <p className="mt-1 text-sm text-muted">
-                Rate each performance and report screen time.
+                Give each character a RangeScore and report screen time.
               </p>
             </div>
             {cast.length > 0 && (

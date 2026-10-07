@@ -21,7 +21,7 @@ export default function RatingControl({
   if (!isLoggedIn) {
     return (
       <p className="mt-2 text-xs text-muted">
-        Sign in to rate this performance.
+        Sign in to give this character a RangeScore.
       </p>
     );
   }
@@ -84,17 +84,17 @@ export default function RatingControl({
       <p className="text-xs font-medium text-muted sm:text-sm">
         {score ? (
           <span>
-            Your rating:{" "}
+            Your RangeScore:{" "}
             <span className={`font-bold ${activeLabelColor}`}>{score}/10</span>
           </span>
         ) : (
-          "Rate this performance"
+          "Give this character a RangeScore"
         )}
       </p>
       <div
         className="mt-2.5 grid grid-cols-5 gap-1.5 sm:gap-2"
         role="group"
-        aria-label="Performance rating"
+        aria-label="Choose a RangeScore from 1 to 10"
       >
         {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => {
           const tone = buttonTone(n);
@@ -104,7 +104,7 @@ export default function RatingControl({
               key={n}
               type="button"
               disabled={isPending}
-              aria-label={`Rate ${n} out of 10`}
+              aria-label={`Set RangeScore to ${n} out of 10`}
               aria-pressed={pressed}
               onClick={() => handleRate(n)}
               className={`min-h-10 rounded-lg px-1 py-2 text-sm font-bold transition-all duration-150 active:scale-[0.97] focus:outline-none disabled:cursor-not-allowed disabled:opacity-55 sm:rounded-xl sm:px-1.5 sm:text-[15px] ${

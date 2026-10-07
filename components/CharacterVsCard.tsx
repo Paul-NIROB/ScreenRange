@@ -250,7 +250,7 @@ export default function CharacterVsCard({ a, b }: Props) {
 
         <div className="mt-6 space-y-4 border-t border-border pt-5 sm:mt-8 sm:space-y-5 sm:pt-6">
           <MetricRow
-            label="Rating"
+            label="RangeScore"
             a={{
               value: a.avg && a.avg > 0 ? a.avg.toFixed(1) : "—",
               numeric: a.avg ?? 0,

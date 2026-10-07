@@ -24,7 +24,7 @@ export default function HomeHeroSection({ top }: Props) {
     return (
       <section className="relative mb-14 sm:mb-20">
         <span className="chip">
-          <span className="text-gold">★</span> Community ratings
+          <span className="text-gold">★</span> Community RangeScores
         </span>
         <div className="mt-6 flex flex-col items-start gap-5 sm:flex-row sm:items-end sm:justify-between">
           <h1 className="font-display text-4xl font-bold leading-[1.02] tracking-tight sm:text-6xl md:text-7xl">
@@ -35,16 +35,17 @@ export default function HomeHeroSection({ top }: Props) {
             ?
           </h1>
           <p className="max-w-sm text-sm leading-relaxed text-muted-strong sm:text-base">
-            Rate the performance, not just the movie.
+            Give every character a RangeScore out of 10. Rate the performance,
+            not just the movie.
           </p>
         </div>
         <div className="mt-10 rounded-2xl border border-dashed border-border-strong bg-surface p-8 text-center text-muted sm:p-12">
-          No ratings yet.{" "}
+          No RangeScores yet.{" "}
           <Link
             href="#films"
             className="font-semibold text-gold underline-offset-4 hover:underline"
           >
-            Rate a performance to start the leaderboard.
+            Give a character a RangeScore to start the leaderboard.
           </Link>
         </div>
       </section>
@@ -61,7 +62,7 @@ export default function HomeHeroSection({ top }: Props) {
   return (
     <section className="relative mb-14 sm:mb-20">
       <span className="chip">
-        <span className="text-gold">★</span> Community ratings
+        <span className="text-gold">★</span> Community RangeScores
       </span>
 
       <div className="mt-6 flex flex-col gap-6 md:grid md:grid-cols-2 md:items-center md:gap-10">
@@ -74,7 +75,8 @@ export default function HomeHeroSection({ top }: Props) {
             ?
           </h1>
           <p className="mt-5 text-sm leading-relaxed text-muted-strong sm:text-base">
-            Rate the performance, not just the movie.
+            Give every character a RangeScore out of 10. Rate the performance,
+            not just the movie.
           </p>
         </div>
 

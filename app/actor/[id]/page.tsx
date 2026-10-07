@@ -65,7 +65,7 @@ export async function generateMetadata({
   const name = (person as { name: string } | null)?.name ?? "Actor";
   return {
     title: `${name} | ScreenRange`,
-    description: `Explore ${name}'s highest-rated performances on ScreenRange.`,
+    description: `Explore ${name}'s highest RangeScore performances on ScreenRange.`,
   };
 }
 

@@ -67,7 +67,7 @@ export default function AverageBadge({ average, count, size = "md" }: Props) {
     return (
       <div className={pal.container + pal.containerEmpty}>
         <span className={`${size === "sm" ? "text-xs" : "text-xs sm:text-sm"} font-medium ${pal.emptyText}`}>
-          No ratings yet
+          No RangeScore yet
         </span>
       </div>
     );

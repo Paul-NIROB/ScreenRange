@@ -145,7 +145,7 @@ export default async function Home({
               </h2>
               {!hasQuery && (
                 <p className="mt-1 text-sm text-muted">
-                  Click any poster to rate the cast performances inside.
+                  Click any poster to give each character a RangeScore.
                 </p>
               )}
             </div>

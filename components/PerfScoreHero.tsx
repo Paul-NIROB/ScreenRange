@@ -90,7 +90,7 @@ export default function PerfScoreHero({
                   —
                 </span>
                 <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted sm:text-xs">
-                  No score yet
+                  No RangeScore yet
                 </span>
               </div>
             )}

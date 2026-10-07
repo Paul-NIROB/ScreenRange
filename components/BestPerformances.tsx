@@ -59,8 +59,7 @@ export default function BestPerformances({ rows }: Props) {
             Ranked <span className="text-gold">by the community</span>
           </h2>
           <p className="mt-1 text-sm text-muted sm:text-base">
-            Every major character they have played, ordered by ScreenRange
-            rating.
+            Every major character they have played, ordered by RangeScore.
           </p>
         </div>
       </div>
@@ -124,7 +123,7 @@ export default function BestPerformances({ rows }: Props) {
                 </p>
                 <div className="mt-1 flex items-center justify-between text-[11px] text-muted sm:text-xs">
                   <span className={scoreColor(score)}>
-                    {score > 0 ? `★ ${score.toFixed(1)}` : "Not rated"}
+                    {score > 0 ? `★ ${score.toFixed(1)}` : "No RangeScore"}
                   </span>
                   <span>
                     {r.rating_count.toLocaleString()}{" "}

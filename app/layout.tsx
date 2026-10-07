@@ -16,11 +16,11 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "ScreenRange",
   description:
-    "Rate actor performances and track screen time in movies and shows.",
+    "Give every character performance a RangeScore and track screen time in movies and shows.",
   openGraph: {
     title: "ScreenRange",
     description:
-      "Rate the performance, not just the movie. Community ratings, screen time and reviews.",
+      "Give every character performance a RangeScore. Explore community scores, screen time and reviews.",
     type: "website",
   },
 };

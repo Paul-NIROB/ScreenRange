@@ -38,7 +38,7 @@ export default function PrivacyPage() {
               password.
             </li>
             <li>
-              The ratings, screen-time estimates and reviews you submit, linked
+              The RangeScores you submit, screen-time estimates and reviews, linked
               to your account.
             </li>
           </ul>
@@ -52,7 +52,7 @@ export default function PrivacyPage() {
               address is never shown.
             </li>
             <li>
-              Ratings and screen times appear only as community averages and
+              RangeScores and screen times appear only as community averages and
               medians, not tied to your name.
             </li>
           </ul>
@@ -64,7 +64,7 @@ export default function PrivacyPage() {
             <li>Supabase for the database and sign-in.</li>
             <li>Vercel for hosting.</li>
             <li>
-              Google Gemini API to write AI community summaries. Public ratings
+              Google Gemini API to write AI community summaries. Public RangeScores
               and review text (without names or emails) may be sent to it.
             </li>
             <li>TMDB for movie and cast information and images.</li>

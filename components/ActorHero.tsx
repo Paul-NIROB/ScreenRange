@@ -72,7 +72,8 @@ export default function ActorHero({
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted-strong md:mx-0 sm:text-base">
             Known for some of the most memorable characters on ScreenRange.
-            Below are their highest-rated and most talked-about performances.
+            Below are their highest RangeScore performances and most talked-about
+            roles.
           </p>
 
           <div className="mx-auto mt-6 grid w-full max-w-xl grid-cols-3 gap-2 sm:gap-3 md:mx-0">
@@ -104,7 +105,7 @@ export default function ActorHero({
                     </span>
                   </p>
                   <p className="mt-1 truncate text-[10px] font-semibold uppercase tracking-[0.16em] text-muted sm:text-xs">
-                    Avg · {totalRatings.toLocaleString()}
+                    Avg RangeScore · {totalRatings.toLocaleString()} ratings
                   </p>
                 </>
               ) : (
@@ -113,7 +114,7 @@ export default function ActorHero({
                     —
                   </p>
                   <p className="mt-1 truncate text-[10px] font-semibold uppercase tracking-[0.16em] text-muted sm:text-xs">
-                    Not rated yet
+                    No RangeScore yet
                   </p>
                 </>
               )}

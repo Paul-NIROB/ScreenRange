@@ -46,7 +46,7 @@ export default function CharacterPerformanceCard({ rows }: Props) {
         <div>
           <span className="chip">
             <span className="text-gold">🏆</span>
-            <span>Highest Rated Performance</span>
+            <span>Highest RangeScore</span>
           </span>
           <h2 className="mt-4 font-display text-3xl font-bold leading-[1.02] tracking-tight sm:text-4xl md:text-5xl">
             Their{" "}
@@ -56,9 +56,9 @@ export default function CharacterPerformanceCard({ rows }: Props) {
             on ScreenRange
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
-            The character that brought out their highest community rating.
+            The character with their highest community RangeScore.
             ScreenRange has no separate &ldquo;love / favorite&rdquo; metric
-            today, so this reflects the best-reviewed performance.
+            today, so this reflects the performance with the highest RangeScore.
           </p>
         </div>
       </div>
@@ -93,7 +93,7 @@ export default function CharacterPerformanceCard({ rows }: Props) {
 
           <div className="relative flex flex-col justify-end p-5 sm:p-7 md:p-9">
             <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-emerald-500/10 ring-1 ring-emerald-500/30 backdrop-blur px-3 py-1 font-display text-base font-bold leading-none text-emerald-400 sm:text-lg">
-              <span aria-hidden>👑</span> #1 Rated
+              <span aria-hidden>👑</span> #1 RangeScore
             </span>
 
             <h3 className="mt-4 truncate font-display text-3xl font-bold leading-[1.02] tracking-tight sm:text-4xl md:text-5xl">
