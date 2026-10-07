@@ -8,6 +8,9 @@ import ScreenTimeControl from "../../../components/ScreenTimeControl";
 import { createClient } from "../../../utils/supabase/server";
 import AiSummary from "../../../components/AiSummary";
 import ScoreBadge from "../../../components/ScoreBadge";
+import PerfScoreHero from "../../../components/PerfScoreHero";
+import PerfStatsGrid from "../../../components/PerfStatsGrid";
+import CharacterVsCard from "../../../components/CharacterVsCard";
 
 type CastRow = {
   id: number;
@@ -138,6 +141,27 @@ export default async function TitlePage({
     }
   }
 
+  const castRanked = [...cast]
+    .map((c) => {
+      const s = stats.get(c.id);
+      return {
+        c,
+        avg: s ? Number(s.avg_score) : 0,
+        count: s ? Number(s.rating_count) : 0,
+      };
+    })
+    .sort((a, b) => {
+      if (b.count === 0 && a.count === 0) return 0;
+      if (b.count === 0) return -1;
+      if (a.count === 0) return 1;
+      return b.avg - a.avg;
+    });
+
+  const rankMap = new Map<number, number>();
+  castRanked.forEach((item, i) => {
+    rankMap.set(item.c.id, i + 1);
+  });
+
   return (
     <div className="min-h-screen text-foreground">
       <Header />
@@ -225,6 +249,106 @@ export default async function TitlePage({
             </div>
           </div>
         </section>
+
+        {cast.length > 0 && (() => {
+          const leadCast = cast[0];
+          const leadStat = stats.get(leadCast.id);
+          const leadAvg = leadStat ? Number(leadStat.avg_score) : 0;
+          const leadCount = leadStat ? Number(leadStat.rating_count) : 0;
+          const leadTime = timeStats.get(leadCast.id);
+          const leadMedian = leadTime ? Number(leadTime.median_minutes) : 0;
+          const leadReports = leadTime ? Number(leadTime.entry_count) : 0;
+          const leadRank = rankMap.get(leadCast.id) ?? 1;
+          return (
+            <>
+              <section className="mt-14 sm:mt-20">
+                <div className="mb-5 flex items-end justify-between gap-3 sm:mb-6">
+                  <div>
+                    <span className="chip">
+                      <span className="text-gold">🎬</span>
+                      <span>Lead performance</span>
+                    </span>
+                    <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+                      Performance <span className="text-gold">summary</span>
+                    </h2>
+                    <p className="mt-1 text-sm text-muted">
+                      Top-billed performance, at a glance.
+                    </p>
+                  </div>
+                </div>
+                <PerfScoreHero
+                  avg={leadCount > 0 ? leadAvg : 0}
+                  count={leadCount}
+                  rank={leadRank}
+                  total={cast.length}
+                  actorName={leadCast.people.name}
+                  characterName={leadCast.character_name}
+                  titleName={title.name}
+                  titleYear={title.year}
+                />
+
+                <div className="mt-5">
+                  <div className="mb-3 flex items-end justify-between gap-3">
+                    <h3 className="font-display text-lg font-semibold tracking-tight sm:text-xl">
+                      📊 Statistics
+                    </h3>
+                  </div>
+                  <PerfStatsGrid
+                    avg={leadCount > 0 ? leadAvg : null}
+                    ratingCount={leadCount}
+                    medianMinutes={leadReports > 0 ? leadMedian : null}
+                    screenTimeReports={leadReports}
+                    castRank={cast.length > 0 ? leadRank : null}
+                    totalCast={cast.length}
+                  />
+                </div>
+              </section>
+
+              {castRanked.length >= 2 && (
+                <section className="mt-14 sm:mt-20">
+                  <CharacterVsCard
+                    a={(() => {
+                      const r = castRanked[0];
+                      const t = timeStats.get(r.c.id);
+                      return {
+                        name: r.c.character_name ?? "Unnamed role",
+                        actorName: r.c.people.name,
+                        titleName: title.name,
+                        titleYear: title.year,
+                        profilePath: r.c.people.profile_path,
+                        avg: r.count > 0 ? r.avg : null,
+                        ratingCount: r.count,
+                        medianMinutes:
+                          t && Number(t.entry_count) > 0
+                            ? Number(t.median_minutes)
+                            : null,
+                        screenTimeReports: t ? Number(t.entry_count) : 0,
+                      };
+                    })()}
+                    b={(() => {
+                      const r = castRanked[1];
+                      const t = timeStats.get(r.c.id);
+                      return {
+                        name: r.c.character_name ?? "Unnamed role",
+                        actorName: r.c.people.name,
+                        titleName: title.name,
+                        titleYear: title.year,
+                        profilePath: r.c.people.profile_path,
+                        avg: r.count > 0 ? r.avg : null,
+                        ratingCount: r.count,
+                        medianMinutes:
+                          t && Number(t.entry_count) > 0
+                            ? Number(t.median_minutes)
+                            : null,
+                        screenTimeReports: t ? Number(t.entry_count) : 0,
+                      };
+                    })()}
+                  />
+                </section>
+              )}
+            </>
+          );
+        })()}
 
         <section className="mt-14 sm:mt-20">
           <div className="mb-6 flex items-end justify-between gap-4">
