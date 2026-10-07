@@ -78,12 +78,13 @@ export default function HomeHeroSection({ top }: Props) {
           </p>
         </div>
 
-        <Link
-          href={`/title/${top.title_id}`}
-          className="card group relative overflow-hidden p-0"
-          aria-label={`View film: ${top.title_name}`}
-        >
-          <div className="grid grid-cols-[auto_1fr] gap-4 p-4 sm:gap-5 sm:p-5">
+        <div className="card group pointer-events-none relative overflow-hidden p-0">
+          <Link
+            href={`/title/${top.title_id}`}
+            aria-label={`View film: ${top.title_name}`}
+            className="pointer-events-auto absolute inset-0 z-0"
+          />
+          <div className="relative z-10 grid grid-cols-[auto_1fr] gap-4 p-4 sm:gap-5 sm:p-5">
             <div className="relative h-40 w-28 shrink-0 overflow-hidden rounded-xl bg-surface-hover ring-1 ring-white/5 sm:h-48 sm:w-36">
               {top.profile_path ? (
                 <Image
@@ -92,7 +93,7 @@ export default function HomeHeroSection({ top }: Props) {
                   fill
                   sizes="(max-width: 767px) 112px, 144px"
                   className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
-                  loading="eager"
+                  priority
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center font-display text-4xl text-muted sm:text-5xl">
@@ -111,10 +112,18 @@ export default function HomeHeroSection({ top }: Props) {
                   {hasCharacter ? top.character_name : top.title_name}
                 </h2>
                 <p className="mt-1.5 truncate text-xs text-muted sm:text-sm">
-                  as{" "}
-                  <span className="text-foreground/90">
-                    {hasCharacter ? top.character_name : top.person_name}
-                  </span>{" "}
+                  <Link
+                    href={`/actor/${top.person_id}`}
+                    className="pointer-events-auto relative z-20 text-foreground/90 hover:text-gold underline-offset-2 hover:underline"
+                  >
+                    {top.person_name}
+                  </Link>
+                  {hasCharacter && (
+                    <>
+                      {" "}as{" "}
+                      <span className="text-foreground/90">{top.character_name}</span>
+                    </>
+                  )}{" "}
                   in <span className="text-foreground/90">{top.title_name}</span>
                   {top.title_year ? ` (${top.title_year})` : ""}
                 </p>
@@ -166,7 +175,7 @@ export default function HomeHeroSection({ top }: Props) {
               </div>
             </div>
           </div>
-        </Link>
+        </div>
       </div>
     </section>
   );

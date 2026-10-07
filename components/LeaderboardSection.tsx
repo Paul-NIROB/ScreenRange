@@ -123,10 +123,14 @@ export default function LeaderboardSection({
 
       <div className="grid gap-4 lg:grid-cols-[1.75fr_1fr] lg:gap-5">
         {/* #1 LARGE FEATURE */}
-        <Link
-          href={`/title/${first.title_id}`}
-          className={`card group relative overflow-hidden p-0 before:-z-0 ${t.heroGlow} relative z-0 border ${t.heroBorder} ${t.heroBackdrop} hover:scale-[1.005]`}
+        <div
+          className={`card group pointer-events-none relative overflow-hidden p-0 before:-z-0 ${t.heroGlow} relative z-0 border ${t.heroBorder} ${t.heroBackdrop} hover:scale-[1.005]`}
         >
+          <Link
+            href={`/title/${first.title_id}`}
+            aria-label={`View film: ${first.title_name}`}
+            className="pointer-events-auto absolute inset-0 z-0"
+          />
           <div className="relative z-10 grid min-h-[360px] content-end grid-cols-1 sm:min-h-[420px] md:grid-cols-[1fr_1.15fr]">
             {/* Image area */}
             <div className="relative h-56 w-full overflow-hidden sm:h-full md:h-full">
@@ -137,7 +141,6 @@ export default function LeaderboardSection({
                   fill
                   sizes="(max-width: 1023px) 100vw, 42vw"
                   className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
-                  loading={tone === "heroes" ? "eager" : "lazy"}
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center font-display text-6xl text-muted sm:text-7xl">
@@ -166,7 +169,16 @@ export default function LeaderboardSection({
               </h3>
               <p className="mt-1.5 truncate text-sm text-muted sm:text-base">
                 portrayed by{" "}
-                <span className="text-foreground/90">{first.person_name}</span>
+                <Link
+                  href={`/actor/${first.person_id}`}
+                  className={`pointer-events-auto relative z-20 underline-offset-2 hover:underline ${
+                    tone === "heroes"
+                      ? "text-foreground/90 hover:text-gold"
+                      : "text-foreground/90 hover:text-fuchsia-300"
+                  }`}
+                >
+                  {first.person_name}
+                </Link>
               </p>
               <p className="mt-0.5 truncate text-xs text-muted-strong sm:text-sm">
                 in {first.title_name}
@@ -194,7 +206,7 @@ export default function LeaderboardSection({
                 </p>
               </div>
 
-              <div className="mt-5 inline-flex w-full items-center gap-2">
+              <div className="mt-5 inline-flex w-full items-center gap-2 relative z-10">
                 <span className="btn btn-primary sm:btn-gold py-2 text-xs sm:text-sm">
                   View performance
                   <svg
@@ -214,7 +226,7 @@ export default function LeaderboardSection({
               </div>
             </div>
           </div>
-        </Link>
+        </div>
 
         {/* #2 / #3 / #4 SUPPORT STACK */}
         <ul className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-1">
@@ -225,12 +237,14 @@ export default function LeaderboardSection({
             const hasChar = !!r.character_name && r.character_name.trim().length > 0;
             return (
               <li key={r.cast_role_id}>
-                <Link
-                  href={`/title/${r.title_id}`}
-                  className="card group flex h-full items-center gap-3 p-3 sm:gap-4 sm:p-4"
-                >
+                <div className="card group pointer-events-none relative flex h-full items-center gap-3 p-3 sm:gap-4 sm:p-4">
+                  <Link
+                    href={`/title/${r.title_id}`}
+                    aria-label={`View film: ${r.title_name}`}
+                    className="pointer-events-auto absolute inset-0 z-0"
+                  />
                   <span
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ring-1 font-display text-base font-bold leading-none sm:h-9 sm:w-9 sm:text-lg ${rankColors(
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ring-1 font-display text-base font-bold leading-none relative z-10 sm:h-9 sm:w-9 sm:text-lg ${rankColors(
                       rank,
                       tone
                     )}`}
@@ -239,7 +253,11 @@ export default function LeaderboardSection({
                     #{rank}
                   </span>
 
-                  <div className="relative h-14 w-12 shrink-0 overflow-hidden rounded-lg bg-surface-hover ring-1 ring-white/5 sm:h-16 sm:w-14 sm:rounded-xl">
+                  <Link
+                    href={`/actor/${r.person_id}`}
+                    className="pointer-events-auto relative z-20 h-14 w-12 shrink-0 overflow-hidden rounded-lg bg-surface-hover ring-1 ring-white/5 sm:h-16 sm:w-14 sm:rounded-xl"
+                    aria-label={`View actor profile: ${r.person_name}`}
+                  >
                     {r.profile_path ? (
                       <Image
                         src={`https://image.tmdb.org/t/p/h632${r.profile_path}`}
@@ -253,18 +271,28 @@ export default function LeaderboardSection({
                         {initialOf(r.person_name)}
                       </div>
                     )}
-                  </div>
+                  </Link>
 
-                  <div className="min-w-0 flex-1">
+                  <div className="min-w-0 flex-1 relative z-10">
                     <p className="truncate text-sm font-semibold leading-snug sm:text-base">
                       {hasChar ? r.character_name : r.title_name}
                     </p>
                     <p className="truncate text-[11px] text-muted sm:text-xs">
-                      {r.person_name} · {r.title_name}
+                      <Link
+                        href={`/actor/${r.person_id}`}
+                        className={`pointer-events-auto relative z-20 underline-offset-2 hover:underline ${
+                          tone === "heroes"
+                            ? "text-foreground/80 hover:text-gold"
+                            : "text-foreground/80 hover:text-fuchsia-300"
+                        }`}
+                      >
+                        {r.person_name}
+                      </Link>{" "}
+                      · {r.title_name}
                     </p>
                   </div>
 
-                  <div className="flex shrink-0 flex-col items-end">
+                  <div className="flex shrink-0 flex-col items-end relative z-10">
                     <div className="flex items-baseline gap-1 text-gold">
                       <span aria-hidden className="text-[13px] leading-none">
                         ★
@@ -277,7 +305,7 @@ export default function LeaderboardSection({
                       {count.toLocaleString()}
                     </p>
                   </div>
-                </Link>
+                </div>
               </li>
             );
           })}

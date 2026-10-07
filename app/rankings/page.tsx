@@ -70,11 +70,13 @@ export default async function RankingsPage() {
 
             return (
               <li key={r.cast_role_id}>
-                <Link
-                  href={`/title/${r.title_id}`}
-                  className="card group flex items-center gap-4 p-3 sm:gap-6 sm:p-5"
-                >
-                  <div className="flex w-10 shrink-0 flex-col items-center justify-center sm:w-14">
+                <div className="card group relative flex items-center gap-4 p-3 sm:gap-6 sm:p-5">
+                  <Link
+                    href={`/title/${r.title_id}`}
+                    aria-label={`View film: ${r.title_name}`}
+                    className="absolute inset-0 z-0"
+                  />
+                  <div className="relative z-10 flex w-10 shrink-0 flex-col items-center justify-center sm:w-14">
                     <span
                       className={`font-display text-2xl font-bold leading-none sm:text-4xl ${
                         index === 0
@@ -102,7 +104,11 @@ export default async function RankingsPage() {
                     )}
                   </div>
 
-                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-surface-hover ring-1 ring-white/5 sm:h-20 sm:w-20">
+                  <Link
+                    href={`/actor/${r.person_id}`}
+                    className="relative z-20 h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-surface-hover ring-1 ring-white/5 sm:h-20 sm:w-20"
+                    aria-label={`View actor profile: ${r.person_name}`}
+                  >
                     {r.profile_path ? (
                       <Image
                         src={`https://image.tmdb.org/t/p/w185${r.profile_path}`}
@@ -116,12 +122,15 @@ export default async function RankingsPage() {
                         {r.person_name.charAt(0)}
                       </div>
                     )}
-                  </div>
+                  </Link>
 
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-base font-semibold leading-tight sm:text-lg">
+                  <div className="min-w-0 flex-1 relative z-10">
+                    <Link
+                      href={`/actor/${r.person_id}`}
+                      className="relative z-20 truncate text-base font-semibold leading-tight hover:text-gold underline-offset-2 hover:underline sm:text-lg"
+                    >
                       {r.person_name}
-                    </p>
+                    </Link>
                     {r.character_name && (
                       <p className="truncate text-xs text-muted-strong sm:text-sm">
                         as <span className="text-foreground/85">{r.character_name}</span>
@@ -133,7 +142,7 @@ export default async function RankingsPage() {
                     </p>
                   </div>
 
-                  <div className="flex shrink-0 flex-col items-end">
+                  <div className="flex shrink-0 flex-col items-end relative z-10">
                     <div className="rating-badge text-sm sm:text-base">
                       <span aria-hidden>★</span>
                       <span>{weighted.toFixed(1)}</span>
@@ -143,7 +152,7 @@ export default async function RankingsPage() {
                       {count === 1 ? "rating" : "ratings"}
                     </p>
                   </div>
-                </Link>
+                </div>
               </li>
             );
           })}

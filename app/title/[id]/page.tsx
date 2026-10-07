@@ -61,36 +61,65 @@ export default async function TitlePage({
     notFound();
   }
 
-  const { data: castData } = await supabase
+  const castPromise = supabase
     .from("cast_roles")
     .select("id, character_name, billing_order, people(id, name, profile_path)")
     .eq("title_id", title.id)
-    .order("billing_order");
+    .order("billing_order")
+    .then((r) => (r.data ?? []) as unknown as CastRow[]);
 
-  const cast = (castData ?? []) as unknown as CastRow[];
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const { data: statsData } = await supabase.rpc("get_title_stats", {
-    p_title_id: title.id,
-  });
-  const stats = new Map<number, StatRow>(
-    ((statsData ?? []) as StatRow[]).map((s): [number, StatRow] => [
-      s.cast_role_id,
-      s,
-    ])
+  const userPromise = supabase.auth.getUser().then(
+    (r) => r.data.user ?? null
   );
 
-  const { data: timeData } = await supabase.rpc("get_title_screen_time", {
-    p_title_id: title.id,
-  });
-  const timeStats = new Map<number, TimeRow>(
-    ((timeData ?? []) as TimeRow[]).map((t): [number, TimeRow] => [
-      t.cast_role_id,
-      t,
-    ])
+  const statsPromise = supabase
+    .rpc("get_title_stats", { p_title_id: title.id })
+    .then(
+      (r) =>
+        new Map<number, StatRow>(
+          ((r.data ?? []) as StatRow[]).map((s): [number, StatRow] => [
+            s.cast_role_id,
+            s,
+          ])
+        )
+    );
+
+  const timeStatsPromise = supabase
+    .rpc("get_title_screen_time", { p_title_id: title.id })
+    .then(
+      (r) =>
+        new Map<number, TimeRow>(
+          ((r.data ?? []) as TimeRow[]).map((t): [number, TimeRow] => [
+            t.cast_role_id,
+            t,
+          ])
+        )
+    );
+
+  const reviewsPromise = supabase
+    .from("reviews")
+    .select("id, user_id, author_name, body, created_at")
+    .eq("title_id", title.id)
+    .order("created_at", { ascending: false })
+    .limit(50)
+    .then((r) => (r.data ?? []) as ReviewRow[]);
+
+  const summaryPromise = supabase
+    .from("ai_summaries")
+    .select("summary")
+    .eq("title_id", title.id)
+    .maybeSingle()
+    .then((r) => r.data ?? null);
+
+  const [cast, user, stats, timeStats, reviews, summaryRow] = await Promise.all(
+    [
+      castPromise,
+      userPromise,
+      statsPromise,
+      timeStatsPromise,
+      reviewsPromise,
+      summaryPromise,
+    ]
   );
 
   let myScores = new Map<number, number>();
@@ -98,39 +127,30 @@ export default async function TitlePage({
   if (user && cast.length > 0) {
     const roleIds = cast.map((c) => c.id);
 
-    const { data: mine } = await supabase
-      .from("performance_ratings")
-      .select("cast_role_id, score")
-      .in("cast_role_id", roleIds);
-    myScores = new Map(
-      (mine ?? []).map((r): [number, number] => [r.cast_role_id, r.score])
-    );
+    const [mine, mineTime] = await Promise.all([
+      supabase
+        .from("performance_ratings")
+        .select("cast_role_id, score")
+        .in("cast_role_id", roleIds)
+        .then((r) => r.data ?? []),
+      supabase
+        .from("screen_time_entries")
+        .select("cast_role_id, minutes")
+        .in("cast_role_id", roleIds)
+        .then((r) => r.data ?? []),
+    ]);
 
-    const { data: mineTime } = await supabase
-      .from("screen_time_entries")
-      .select("cast_role_id, minutes")
-      .in("cast_role_id", roleIds);
+    myScores = new Map(
+      mine.map((r): [number, number] => [r.cast_role_id, r.score])
+    );
     myMinutes = new Map(
-      (mineTime ?? []).map((r): [number, number] => [r.cast_role_id, r.minutes])
+      mineTime.map((r): [number, number] => [r.cast_role_id, r.minutes])
     );
   }
 
-  const { data: reviewsData } = await supabase
-    .from("reviews")
-    .select("id, user_id, author_name, body, created_at")
-    .eq("title_id", title.id)
-    .order("created_at", { ascending: false })
-    .limit(50);
-
-  const reviews = (reviewsData ?? []) as ReviewRow[];
   const myReview = user
     ? (reviews.find((r) => r.user_id === user.id) ?? null)
     : null;
-  const { data: summaryRow } = await supabase
-    .from("ai_summaries")
-    .select("summary")
-    .eq("title_id", title.id)
-    .maybeSingle();
 
   let maxMedian = 0;
   for (const c of cast) {
@@ -215,7 +235,7 @@ export default async function TitlePage({
                     src={`https://image.tmdb.org/t/p/w500${title.poster_path}`}
                     alt={title.name}
                     fill
-                    loading="eager"
+                    priority
                     sizes="(max-width: 768px) 220px, 320px"
                     className="object-cover rounded-xl"
                   />
@@ -387,7 +407,11 @@ export default async function TitlePage({
                   return (
                     <article key={c.id} className="card p-0">
                       <div className="flex gap-3 p-3">
-                        <div className="media-wrap h-[72px] w-[72px] shrink-0 overflow-hidden rounded-lg">
+                        <Link
+                          href={`/actor/${c.people.id}`}
+                          className="media-wrap h-[72px] w-[72px] shrink-0 overflow-hidden rounded-lg"
+                          aria-label={`View actor profile: ${c.people.name}`}
+                        >
                           <div className="relative h-full w-full">
                             {c.people.profile_path ? (
                               <Image
@@ -403,11 +427,14 @@ export default async function TitlePage({
                               </div>
                             )}
                           </div>
-                        </div>
+                        </Link>
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-semibold leading-snug">
+                          <Link
+                            href={`/actor/${c.people.id}`}
+                            className="truncate text-sm font-semibold leading-snug hover:text-gold"
+                          >
                             {c.people.name}
-                          </p>
+                          </Link>
                           {c.character_name && (
                             <p className="mt-0.5 truncate text-xs text-muted">
                               as{" "}
@@ -474,7 +501,11 @@ export default async function TitlePage({
                     <article key={c.id} className="card flex flex-col p-0">
                       <div className="flex flex-col gap-4 p-5">
                         <div className="flex gap-4">
-                          <div className="media-wrap h-28 w-24 shrink-0 overflow-hidden">
+                          <Link
+                            href={`/actor/${c.people.id}`}
+                            className="media-wrap h-28 w-24 shrink-0 overflow-hidden"
+                            aria-label={`View actor profile: ${c.people.name}`}
+                          >
                             <div className="relative h-full w-full">
                               {c.people.profile_path ? (
                                 <Image
@@ -490,11 +521,14 @@ export default async function TitlePage({
                                 </div>
                               )}
                             </div>
-                          </div>
+                          </Link>
                           <div className="min-w-0 flex-1">
-                            <p className="truncate text-sm font-semibold leading-snug sm:text-base">
+                            <Link
+                              href={`/actor/${c.people.id}`}
+                              className="truncate text-sm font-semibold leading-snug hover:text-gold sm:text-base"
+                            >
                               {c.people.name}
-                            </p>
+                            </Link>
                             {c.character_name && (
                               <p className="mt-0.5 truncate text-xs text-muted sm:text-sm">
                                 as{" "}

@@ -54,11 +54,13 @@ export default function HomeTopPerformancesList({ rows }: Props) {
 
           return (
             <li key={r.cast_role_id}>
-              <Link
-                href={`/title/${r.title_id}`}
-                className="group flex items-center gap-3 p-3 transition hover:bg-surface-hover sm:gap-4 sm:p-4"
-              >
-                <div className="flex w-6 shrink-0 items-center justify-center sm:w-8">
+              <div className="group pointer-events-none relative flex items-center gap-3 p-3 transition hover:bg-surface-hover sm:gap-4 sm:p-4">
+                <Link
+                  href={`/title/${r.title_id}`}
+                  aria-label={`View film: ${r.title_name}`}
+                  className="pointer-events-auto absolute inset-0 z-0"
+                />
+                <div className="relative z-10 flex w-6 shrink-0 items-center justify-center sm:w-8">
                   <span
                     className={`font-display text-base font-bold leading-none sm:text-xl ${
                       rank === 1
@@ -74,7 +76,11 @@ export default function HomeTopPerformancesList({ rows }: Props) {
                   </span>
                 </div>
 
-                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-surface-hover ring-1 ring-white/5 sm:h-12 sm:w-12">
+                <Link
+                  href={`/actor/${r.person_id}`}
+                  className="pointer-events-auto relative z-20 h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-surface-hover ring-1 ring-white/5 sm:h-12 sm:w-12"
+                  aria-label={`View actor profile: ${r.person_name}`}
+                >
                   {r.profile_path ? (
                     <Image
                       src={`https://image.tmdb.org/t/p/h632${r.profile_path}`}
@@ -82,30 +88,34 @@ export default function HomeTopPerformancesList({ rows }: Props) {
                       fill
                       sizes="48px"
                       className="object-cover object-top transition-transform duration-500 group-hover:scale-110"
-                      loading={i < 4 ? "eager" : "lazy"}
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center font-display text-base text-muted sm:text-lg">
                       {initialOf(r.person_name)}
                     </div>
                   )}
-                </div>
+                </Link>
 
-                <div className="min-w-0 flex-1">
+                <div className="min-w-0 flex-1 relative z-10">
                   <p className="truncate text-sm font-semibold leading-tight sm:text-base">
                     {hasCharacter ? r.character_name : r.title_name}
                   </p>
                   <p className="truncate text-xs text-muted sm:text-sm">
-                    <span className="text-foreground/80">{r.person_name}</span> ·{" "}
-                    {r.title_name}
+                    <Link
+                      href={`/actor/${r.person_id}`}
+                      className="pointer-events-auto relative z-20 text-foreground/80 hover:text-gold underline-offset-2 hover:underline"
+                    >
+                      {r.person_name}
+                    </Link>{" "}
+                    · {r.title_name}
                   </p>
                 </div>
 
-                <div className="rating-badge shrink-0">
+                <div className="rating-badge shrink-0 relative z-10">
                   <span aria-hidden>★</span>
                   <span>{weighted.toFixed(1)}</span>
                 </div>
-              </Link>
+              </div>
             </li>
           );
         })}
