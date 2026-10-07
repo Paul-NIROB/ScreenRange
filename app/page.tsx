@@ -49,7 +49,7 @@ export default async function Home({
   const { data: titles, error } = await builder.order("id").limit(24);
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen text-foreground">
       <Header />
 
       <main className="mx-auto max-w-6xl px-6 py-10">
@@ -59,11 +59,11 @@ export default async function Home({
             name="q"
             defaultValue={query}
             placeholder="Search movies or actors..."
-            className="w-full rounded-lg border border-neutral-700 bg-neutral-900 px-4 py-3 outline-none focus:border-purple-500"
+            className="w-full rounded-lg border border-border bg-surface px-4 py-3 outline-none focus:border-purple-500"
           />
           <button
             type="submit"
-            className="rounded-lg bg-purple-600 px-5 py-3 font-medium hover:bg-purple-500"
+            className="rounded-lg bg-brand px-5 py-3 font-medium hover:bg-brand-hover"
           >
             Search
           </button>
@@ -74,7 +74,7 @@ export default async function Home({
             {query ? `Results for "${query}"` : "Popular titles"}
           </h2>
           {query && (
-            <Link href="/" className="text-sm text-neutral-400 hover:text-white">
+            <Link href="/" className="text-sm text-muted hover:text-white">
               Clear search
             </Link>
           )}
@@ -85,7 +85,7 @@ export default async function Home({
         )}
 
         {!error && titles?.length === 0 && (
-          <p className="text-neutral-500">
+          <p className="text-muted">
             No titles found. Try a different name.
           </p>
         )}
@@ -95,9 +95,9 @@ export default async function Home({
             <Link
               key={t.id}
               href={`/title/${t.id}`}
-              className="rounded-lg bg-neutral-900 p-3 transition hover:bg-neutral-800"
+              className="rounded-lg bg-surface p-3 transition hover:bg-surface-hover"
             >
-              <div className="relative aspect-[2/3] overflow-hidden rounded-md bg-neutral-800">
+              <div className="relative aspect-[2/3] overflow-hidden rounded-md bg-surface-hover">
                 {t.poster_path && (
                   <Image
                     src={`https://image.tmdb.org/t/p/w500${t.poster_path}`}
@@ -110,7 +110,7 @@ export default async function Home({
                 )}
               </div>
               <p className="mt-3 font-medium">{t.name}</p>
-              <p className="text-sm text-neutral-400">{t.year}</p>
+              <p className="text-sm text-muted">{t.year}</p>
             </Link>
           ))}
         </div>

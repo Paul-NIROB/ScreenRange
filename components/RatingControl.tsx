@@ -20,7 +20,7 @@ export default function RatingControl({
 
   if (!isLoggedIn) {
     return (
-      <p className="mt-2 text-xs text-neutral-500">
+      <p className="mt-2 text-xs text-muted">
         Sign in to rate this performance.
       </p>
     );
@@ -42,7 +42,7 @@ export default function RatingControl({
 
   return (
     <div className="mt-2">
-      <p className="text-xs text-neutral-400">
+      <p className="text-xs text-muted">
         {score ? `Your rating: ${score}/10` : "Rate this performance"}
       </p>
       <div className="mt-1 grid grid-cols-5 gap-1">
@@ -54,8 +54,8 @@ export default function RatingControl({
             onClick={() => handleRate(n)}
             className={`rounded py-1 text-xs ${
               score === n
-                ? "bg-purple-600 text-white"
-                : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700"
+                ? "bg-brand text-white"
+                : "bg-surface-hover text-neutral-300 hover:bg-neutral-700"
             }`}
           >
             {n}

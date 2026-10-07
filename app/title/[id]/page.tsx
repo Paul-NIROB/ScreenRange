@@ -129,16 +129,16 @@ export default async function TitlePage({
     .maybeSingle();  
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen text-foreground">
       <Header />
 
       <main className="mx-auto max-w-4xl px-6 py-10">
-        <Link href="/" className="text-sm text-neutral-400 hover:text-white">
+        <Link href="/" className="text-sm text-muted hover:text-white">
           ← Back to all titles
         </Link>
 
         <div className="mt-6 flex flex-col gap-8 md:flex-row">
-          <div className="relative aspect-[2/3] w-full max-w-xs shrink-0 self-start overflow-hidden rounded-lg bg-neutral-800 md:sticky md:top-6">
+          <div className="relative aspect-[2/3] w-full max-w-xs shrink-0 self-start overflow-hidden rounded-lg bg-surface-hover md:sticky md:top-6">
             {title.poster_path && (
               <Image
                 src={`https://image.tmdb.org/t/p/w500${title.poster_path}`}
@@ -152,7 +152,7 @@ export default async function TitlePage({
 
           <div className="flex-1">
             <h1 className="text-3xl font-bold">{title.name}</h1>
-            <p className="mt-2 text-neutral-400">{title.year}</p>
+            <p className="mt-2 text-muted">{title.year}</p>
             <AiSummary
   titleId={title.id}
   initialSummary={summaryRow?.summary ?? null}
@@ -162,7 +162,7 @@ export default async function TitlePage({
             <h2 className="mt-10 text-xl font-semibold">Cast</h2>
 
             {cast.length === 0 ? (
-              <p className="mt-2 text-neutral-500">No cast information yet.</p>
+              <p className="mt-2 text-muted">No cast information yet.</p>
             ) : (
               <div className="mt-4 grid grid-cols-2 gap-4">
                 {cast.map((c) => {
@@ -172,8 +172,8 @@ export default async function TitlePage({
                   const timeCount = time ? Number(time.entry_count) : 0;
 
                   return (
-                    <div key={c.id} className="rounded-lg bg-neutral-900 p-3">
-                      <div className="relative aspect-square overflow-hidden rounded-md bg-neutral-800">
+                    <div key={c.id} className="rounded-lg bg-surface p-3">
+                      <div className="relative aspect-square overflow-hidden rounded-md bg-surface-hover">
                         {c.people.profile_path ? (
                           <Image
                             src={`https://image.tmdb.org/t/p/w185${c.people.profile_path}`}
@@ -184,14 +184,14 @@ export default async function TitlePage({
                             className="object-cover object-top"
                           />
                         ) : (
-                          <div className="flex h-full items-center justify-center text-2xl text-neutral-500">
+                          <div className="flex h-full items-center justify-center text-2xl text-muted">
                             {c.people.name.charAt(0)}
                           </div>
                         )}
                       </div>
                       <p className="mt-2 text-sm font-medium">{c.people.name}</p>
                       {c.character_name && (
-                        <p className="text-xs text-neutral-400">
+                        <p className="text-xs text-muted">
                           as {c.character_name}
                         </p>
                       )}
@@ -210,7 +210,7 @@ export default async function TitlePage({
                         isLoggedIn={!!user}
                       />
 
-                      <p className="mt-3 border-t border-neutral-800 pt-2 text-xs text-neutral-300">
+                      <p className="mt-3 border-t border-border pt-2 text-xs text-neutral-300">
                         {time
                           ? `⏱ ${Number(time.median_minutes)} min on screen · ${timeCount} ${
                               timeCount === 1 ? "report" : "reports"
@@ -238,19 +238,19 @@ export default async function TitlePage({
             />
 
             {reviews.length === 0 ? (
-              <p className="mt-4 text-neutral-500">
+              <p className="mt-4 text-muted">
                 No reviews yet. Be the first to write one.
               </p>
             ) : (
               <ul className="mt-4 space-y-3">
                 {reviews.map((r) => (
-                  <li key={r.id} className="rounded-lg bg-neutral-900 p-4">
+                  <li key={r.id} className="rounded-lg bg-surface p-4">
                     <div className="flex items-center justify-between text-sm">
                       <span className="font-medium">
                         {r.author_name}
                         {user && r.user_id === user.id ? " (you)" : ""}
                       </span>
-                      <span className="text-xs text-neutral-500">
+                      <span className="text-xs text-muted">
                         {new Date(r.created_at).toLocaleDateString("en-IN", {
                           day: "numeric",
                           month: "short",

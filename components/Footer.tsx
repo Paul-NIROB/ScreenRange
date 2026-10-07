@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="mt-16 border-t border-neutral-800 px-6 py-8 text-center text-xs text-neutral-500">
+    <footer className="mt-16 border-t border-border px-6 py-8 text-center text-xs text-muted">
       <p>
         ScreenRange is a portfolio project. Ratings and reviews come from the
         community.

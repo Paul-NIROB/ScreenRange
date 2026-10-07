@@ -7,12 +7,12 @@ export const metadata = {
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen text-foreground">
       <Header />
 
       <main className="mx-auto max-w-2xl px-6 py-10">
         <h1 className="text-3xl font-bold">Privacy</h1>
-        <p className="mt-2 text-sm text-neutral-500">
+        <p className="mt-2 text-sm text-muted">
           Last updated: 5 October 2026
         </p>
 

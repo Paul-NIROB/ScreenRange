@@ -32,12 +32,12 @@ export default async function RankingsPage() {
   const rows = (data ?? []) as RankingRow[];
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen text-foreground">
       <Header />
 
       <main className="mx-auto max-w-3xl px-6 py-10">
         <h1 className="text-3xl font-bold">Top performances</h1>
-        <p className="mt-2 text-neutral-400">
+        <p className="mt-2 text-muted">
           The best-rated acting performances of all time, ranked by the
           community. Scores with few ratings are pulled toward the site
           average, so one lucky 10 can&apos;t take the top spot.
@@ -50,7 +50,7 @@ export default async function RankingsPage() {
         )}
 
         {!error && rows.length === 0 && (
-          <p className="mt-6 text-neutral-500">
+          <p className="mt-6 text-muted">
             No ratings yet. Open a movie and rate a performance to start the
             leaderboard.
           </p>
@@ -64,13 +64,13 @@ export default async function RankingsPage() {
               <li key={r.cast_role_id}>
                 <Link
                   href={`/title/${r.title_id}`}
-                  className="flex items-center gap-4 rounded-lg bg-neutral-900 p-3 transition hover:bg-neutral-800"
+                  className="flex items-center gap-4 rounded-lg bg-surface p-3 transition hover:bg-surface-hover"
                 >
-                  <span className="w-8 text-center text-xl font-bold text-neutral-500">
+                  <span className="w-8 text-center text-xl font-bold text-muted">
                     {index + 1}
                   </span>
 
-                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md bg-neutral-800">
+                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md bg-surface-hover">
                     {r.profile_path ? (
                       <Image
                         src={`https://image.tmdb.org/t/p/w185${r.profile_path}`}
@@ -80,7 +80,7 @@ export default async function RankingsPage() {
                         className="object-cover object-top"
                       />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-xl text-neutral-500">
+                      <div className="flex h-full items-center justify-center text-xl text-muted">
                         {r.person_name.charAt(0)}
                       </div>
                     )}
@@ -88,7 +88,7 @@ export default async function RankingsPage() {
 
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-medium">{r.person_name}</p>
-                    <p className="truncate text-sm text-neutral-400">
+                    <p className="truncate text-sm text-muted">
                       {r.character_name ? `as ${r.character_name} in ` : "in "}
                       {r.title_name}
                       {r.title_year ? ` (${r.title_year})` : ""}
@@ -99,7 +99,7 @@ export default async function RankingsPage() {
                     <p className="text-lg font-semibold">
                       ★ {Number(r.weighted_score).toFixed(1)}
                     </p>
-                    <p className="text-xs text-neutral-500">
+                    <p className="text-xs text-muted">
                       avg {Number(r.avg_score).toFixed(1)} · {count}{" "}
                       {count === 1 ? "rating" : "ratings"}
                     </p>

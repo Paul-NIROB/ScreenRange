@@ -22,7 +22,7 @@ export default function ScreenTimeControl({
 
   if (!isLoggedIn) {
     return (
-      <p className="mt-2 text-xs text-neutral-500">
+      <p className="mt-2 text-xs text-muted">
         Sign in to add screen time.
       </p>
     );
@@ -40,7 +40,7 @@ export default function ScreenTimeControl({
 
   return (
     <div className="mt-2">
-      <label className="text-xs text-neutral-400">
+      <label className="text-xs text-muted">
         Your screen-time estimate (minutes)
       </label>
       <div className="mt-1 flex gap-1">
@@ -51,7 +51,7 @@ export default function ScreenTimeControl({
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder="e.g. 45"
-          className="w-full rounded bg-neutral-800 px-2 py-1 text-xs outline-none focus:ring-1 focus:ring-purple-500"
+          className="w-full rounded bg-surface-hover px-2 py-1 text-xs outline-none focus:ring-1 focus:ring-purple-500"
         />
         <button
           type="button"

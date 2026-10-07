@@ -22,7 +22,7 @@ export default function ReviewForm({
 
   if (!isLoggedIn) {
     return (
-      <p className="mt-3 text-sm text-neutral-500">
+      <p className="mt-3 text-sm text-muted">
         Sign in to write a review.
       </p>
     );
@@ -63,14 +63,14 @@ export default function ReviewForm({
         maxLength={1000}
         rows={4}
         placeholder="What did you think of this film? (10 to 1000 characters)"
-        className="w-full rounded-lg bg-neutral-900 p-3 text-sm outline-none focus:ring-1 focus:ring-purple-500"
+        className="w-full rounded-lg bg-surface p-3 text-sm outline-none focus:ring-1 focus:ring-purple-500"
       />
       <div className="mt-2 flex items-center gap-2">
         <button
           type="button"
           disabled={isPending || text.trim().length < 10}
           onClick={handleSave}
-          className="rounded-md bg-purple-600 px-4 py-1.5 text-sm font-medium hover:bg-purple-500 disabled:opacity-50"
+          className="rounded-md bg-brand px-4 py-1.5 text-sm font-medium hover:bg-brand-hover disabled:opacity-50"
         >
           {hasReview ? "Update review" : "Post review"}
         </button>
@@ -79,12 +79,12 @@ export default function ReviewForm({
             type="button"
             disabled={isPending}
             onClick={handleDelete}
-            className="rounded-md border border-neutral-700 px-4 py-1.5 text-sm hover:bg-neutral-800 disabled:opacity-50"
+            className="rounded-md border border-border px-4 py-1.5 text-sm hover:bg-surface-hover disabled:opacity-50"
           >
             Delete
           </button>
         )}
-        <span className="ml-auto text-xs text-neutral-500">
+        <span className="ml-auto text-xs text-muted">
           {text.length}/1000
         </span>
       </div>
