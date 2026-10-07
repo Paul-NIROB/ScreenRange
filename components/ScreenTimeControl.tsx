@@ -39,33 +39,40 @@ export default function ScreenTimeControl({
   }
 
   return (
-    <div className="mt-2">
-      <label className="text-xs text-muted">
-        Your screen-time estimate (minutes)
+    <div className="mt-1">
+      <label className="text-xs font-medium text-muted sm:text-sm">
+        Screen-time estimate
       </label>
-      <div className="mt-1 flex gap-1">
-        <input
-          type="number"
-          min={1}
-          max={300}
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder="e.g. 45"
-          className="w-full rounded bg-surface-hover px-2 py-1 text-xs outline-none focus:ring-1 focus:ring-purple-500"
-        />
+      <div className="mt-2.5 flex gap-2">
+        <div className="relative flex-1">
+          <input
+            type="number"
+            min={1}
+            max={300}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder="e.g. 45"
+            className="input pr-10 py-2 text-sm sm:text-[0.95rem]"
+          />
+          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-muted-strong">
+            min
+          </span>
+        </div>
         <button
           type="button"
           disabled={isPending || value === ""}
           onClick={handleSave}
-          className="rounded bg-neutral-700 px-2 py-1 text-xs hover:bg-neutral-600 disabled:opacity-50"
+          className="btn btn-primary shrink-0 px-4 py-2 text-sm disabled:cursor-not-allowed sm:text-[0.95rem]"
         >
-          Save
+          {isPending ? "…" : "Save"}
         </button>
       </div>
       {message && (
         <p
-          className={`mt-1 text-xs ${
-            message === "Saved!" ? "text-green-400" : "text-red-400"
+          className={`mt-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium ${
+            message === "Saved!"
+              ? "bg-success/10 text-success"
+              : "bg-danger/10 text-danger"
           }`}
         >
           {message}

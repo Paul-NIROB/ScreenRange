@@ -35,71 +35,110 @@ export default async function RankingsPage() {
     <div className="min-h-screen text-foreground">
       <Header />
 
-      <main className="mx-auto max-w-3xl px-6 py-10">
-        <h1 className="text-3xl font-bold">Top performances</h1>
-        <p className="mt-2 text-muted">
-          The best-rated acting performances of all time, ranked by the
-          community. Scores with few ratings are pulled toward the site
-          average, so one lucky 10 can&apos;t take the top spot.
-        </p>
+      <main className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <div className="mb-10 text-center sm:mb-14 sm:text-left">
+          <span className="chip">
+            <span className="text-gold">★</span> Leaderboard
+          </span>
+          <h1 className="mt-5 font-display text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+            Top <span className="text-gold">performances</span>
+          </h1>
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-strong sm:mx-0 sm:text-base">
+            The best-rated acting performances of all time, ranked by the
+            community. Scores with few ratings are pulled toward the site
+            average, so one lucky 10 can&apos;t take the top spot.
+          </p>
+        </div>
 
         {error && (
-          <p className="mt-6 text-red-400">
+          <p className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">
             Could not load rankings: {error.message}
           </p>
         )}
 
         {!error && rows.length === 0 && (
-          <p className="mt-6 text-muted">
+          <div className="rounded-2xl border border-dashed border-border-strong bg-surface p-10 text-center text-muted">
             No ratings yet. Open a movie and rate a performance to start the
             leaderboard.
-          </p>
+          </div>
         )}
 
-        <ol className="mt-8 space-y-3">
+        <ol className="mt-8 space-y-3 sm:space-y-4">
           {rows.map((r, index) => {
             const count = Number(r.rating_count);
+            const weighted = Number(r.weighted_score);
 
             return (
               <li key={r.cast_role_id}>
                 <Link
                   href={`/title/${r.title_id}`}
-                  className="flex items-center gap-4 rounded-lg bg-surface p-3 transition hover:bg-surface-hover"
+                  className="card group flex items-center gap-4 p-3 sm:gap-6 sm:p-5"
                 >
-                  <span className="w-8 text-center text-xl font-bold text-muted">
-                    {index + 1}
-                  </span>
+                  <div className="flex w-10 shrink-0 flex-col items-center justify-center sm:w-14">
+                    <span
+                      className={`font-display text-2xl font-bold leading-none sm:text-4xl ${
+                        index === 0
+                          ? "text-gold"
+                          : index === 1
+                            ? "text-muted-strong"
+                            : index === 2
+                              ? "text-[#cc8850]"
+                              : "text-muted"
+                      }`}
+                    >
+                      {index + 1}
+                    </span>
+                    {index < 3 && (
+                      <span
+                        aria-hidden
+                        className={`mt-1 block h-0.5 w-6 sm:w-8 ${
+                          index === 0
+                            ? "bg-gold"
+                            : index === 1
+                              ? "bg-muted-strong/60"
+                              : "bg-[#cc8850]/70"
+                        }`}
+                      />
+                    )}
+                  </div>
 
-                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md bg-surface-hover">
+                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-surface-hover ring-1 ring-white/5 sm:h-20 sm:w-20">
                     {r.profile_path ? (
                       <Image
                         src={`https://image.tmdb.org/t/p/w185${r.profile_path}`}
                         alt={r.person_name}
                         fill
-                        sizes="64px"
-                        className="object-cover object-top"
+                        sizes="80px"
+                        className="object-cover object-top transition-transform duration-500 group-hover:scale-110"
                       />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-xl text-muted">
+                      <div className="flex h-full w-full items-center justify-center font-display text-2xl text-muted sm:text-3xl">
                         {r.person_name.charAt(0)}
                       </div>
                     )}
                   </div>
 
                   <div className="min-w-0 flex-1">
-                    <p className="truncate font-medium">{r.person_name}</p>
-                    <p className="truncate text-sm text-muted">
-                      {r.character_name ? `as ${r.character_name} in ` : "in "}
-                      {r.title_name}
-                      {r.title_year ? ` (${r.title_year})` : ""}
+                    <p className="truncate text-base font-semibold leading-tight sm:text-lg">
+                      {r.person_name}
+                    </p>
+                    {r.character_name && (
+                      <p className="truncate text-xs text-muted-strong sm:text-sm">
+                        as <span className="text-foreground/85">{r.character_name}</span>
+                      </p>
+                    )}
+                    <p className="mt-0.5 truncate text-xs text-muted sm:text-sm">
+                      in {r.title_name}
+                      {r.title_year ? ` · ${r.title_year}` : ""}
                     </p>
                   </div>
 
-                  <div className="text-right">
-                    <p className="text-lg font-semibold">
-                      ★ {Number(r.weighted_score).toFixed(1)}
-                    </p>
-                    <p className="text-xs text-muted">
+                  <div className="flex shrink-0 flex-col items-end">
+                    <div className="rating-badge text-sm sm:text-base">
+                      <span aria-hidden>★</span>
+                      <span>{weighted.toFixed(1)}</span>
+                    </div>
+                    <p className="mt-1.5 text-[11px] text-muted sm:text-xs">
                       avg {Number(r.avg_score).toFixed(1)} · {count}{" "}
                       {count === 1 ? "rating" : "ratings"}
                     </p>

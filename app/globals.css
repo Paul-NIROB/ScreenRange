@@ -2,45 +2,424 @@
 
 :root {
   color-scheme: dark;
-  --background: #0b0b10;
-  --foreground: #ededf2;
-  --surface: #14141c;
-  --surface-hover: #1c1c27;
-  --border: #26263a;
-  --muted: #9a9ab0;
-  --brand: #7c3aed;
-  --brand-hover: #8b5cf6;
-  --gold: #e8b84a;
+
+  /* ————————————————————————————————————————————
+     PREMIUM CINEMATIC "WHO STOLE THE SHOW?" TOKENS
+     ———————————————————————————————————————————— */
+  /* Near-black background, near-black gradients used very
+     dark charcoal cards, pure white foreground,
+     muted secondary text, gold ratings, one muted accent. */
+
+  --background: #07070a;
+  --background-elevated: #0d0d13;
+  --foreground: #f5f5f7;
+
+  /* Cards — two-tier charcoal system */
+  --surface: #111119;
+  --surface-hover: #191925;
+  --surface-strong: #0f0f16;
+
+  /* Borders + dividers */
+  --border: #23232f;
+  --border-strong: #32324a;
+
+  /* Text hierarchy */
+  --muted: #8a8a9c;
+  --muted-strong: #b5b5c3;
+
+  /* Ratings (primary accent = gold; only accent = gold */
+  --gold: #eabe55;
+  --gold-soft: #f5d078;
+  --gold-muted: #a98839;
+
+  /* Single minimal brand accent — used sparingly (CTA, focus, thin dividers) */
+  --brand: #c9a84c;
+  --brand-hover: #d8b75a;
+  --accent: #f5f5f7;
+  --accent-hover: #ffffff;
+
+  /* Utility tones used by rating button system only */
+  --success: #31c48d;
+  --warning: #eabe55;
+  --danger: #ef6461;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-elevated: var(--background-elevated);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
   --color-surface-hover: var(--surface-hover);
+  --color-surface-strong: var(--surface-strong);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-muted: var(--muted);
+  --color-muted-strong: var(--muted-strong);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-gold-muted: var(--gold-muted);
   --color-brand: var(--brand);
   --color-brand-hover: var(--brand-hover);
-  --color-gold: var(--gold);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
   --font-sans: var(--font-geist-sans);
   --font-display: var(--font-playfair);
+
+  /* Cinematic spacing scale */
+  --spacing-cinema-1: clamp(1.5rem, 3vw, 2.5rem);
+  --spacing-cinema-2: clamp(2.5rem, 5vw, 4rem);
+  --spacing-cinema-3: clamp(4rem, 8vw, 7rem);
+
+  /* Cinematic radii
+     (subtle, premium — no pill shapes on cards */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+
+  /* Premium shadows — subtle, directional */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.6), 0 10px 30px -15px rgba(0, 0, 0, 0.6);
+  --shadow-card-hover: 0 2px 6px rgba(0, 0, 0, 0.7), 0 24px 50px -20px rgba(0, 0, 0, 0.8);
+  --shadow-gold: 0 0 0 1px rgba(234, 190, 85, 0.08), 0 10px 30px -18px rgba(234, 190, 85, 0.35);
+}
+
+/* =========================================================
+   BASE DOCUMENT / LAYOUT
+   ========================================================= */
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background:
-    radial-gradient(1100px 480px at 50% -8%, rgba(124, 58, 237, 0.2), transparent 60%),
+    radial-gradient(1200px 600px at 50% -10%, rgba(234, 190, 85, 0.08), transparent 55%),
+    radial-gradient(900px 500px at 10% 10%, rgba(255, 255, 255, 0.025), transparent 60%),
+    radial-gradient(900px 500px at 90% 0%, rgba(255, 255, 255, 0.02), transparent 60%),
     var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
 }
 
+/* =========================================================
+   TYPOGRAPHY — cinematic, strong display hierarchy
+   ========================================================= */
+
 h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-playfair), "Playfair Display", Georgia, serif;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--foreground);
+  font-weight: 700;
+}
+
+h1 {
+  letter-spacing: -0.03em;
+}
+
 h2 {
-  font-family: var(--font-playfair), Georgia, serif;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+}
+
+h3 {
+  letter-spacing: -0.015em;
+}
+
+p,
+span,
+label,
+li,
+button,
+input,
+textarea {
+  line-height: 1.55;
+}
+
+strong,
+b {
+  color: var(--foreground);
 }
 
 ::selection {
-  background: rgba(124, 58, 237, 0.45);
+  background: rgba(234, 190, 85, 0.35);
+  color: #fff;
+}
+
+/* =========================================================
+   FOCUS — unified premium outline
+   ========================================================= */
+
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(234, 190, 85, 0.35);
+  border-color: var(--gold) !important;
+}
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+a {
+  color: inherit;
+  transition: color 160ms ease, opacity 160ms ease;
+}
+
+/* =========================================================
+   CARD BASE — .card (opt-in utility shared styling
+   ========================================================= */
+
+@layer components {
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-card);
+    transition:
+      transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 300ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 200ms ease,
+      border-color 200ms ease;
+  }
+
+  .card:hover {
+    background: var(--surface-hover);
+    border-color: var(--border-strong);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  /* ---------- BUTTONS ---------- */
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    font-size: 0.875rem;
+    line-height: 1;
+    padding: 0.65rem 1rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      background-color 180ms ease,
+      color 180ms ease,
+      border-color 180ms ease,
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      opacity 180ms ease;
+  }
+
+  .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  .btn-primary {
+    background: var(--foreground);
+    color: #0a0a0f;
+    border-color: transparent;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px -12px rgba(255, 255, 255, 0.18);
+  }
+
+  .btn-gold {
+    background: var(--gold);
+    color: #140e02;
+    border-color: transparent;
+    box-shadow: var(--shadow-gold);
+  }
+
+  .btn-gold:hover:not(:disabled) {
+    background: var(--gold-soft);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--foreground);
+    border-color: var(--border-strong);
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    background: var(--surface-hover);
+    border-color: var(--muted);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted-strong);
+    border-color: transparent;
+  }
+
+  .btn-ghost:hover:not(:disabled) {
+    background: var(--surface-hover);
+    color: var(--foreground);
+  }
+
+  /* ---------- FORM CONTROLS ---------- */
+
+  .input,
+  .textarea {
+    width: 100%;
+    background: var(--surface-strong);
+    color: var(--foreground);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    transition:
+      border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+  }
+
+  .input::placeholder,
+  .textarea::placeholder {
+    color: var(--muted);
+  }
+
+  .input:focus,
+  .textarea:focus {
+    background: var(--surface);
+    border-color: var(--gold-muted);
+    box-shadow: 0 0 0 3px rgba(234, 190, 85, 0.14);
+  }
+
+  .textarea {
+    resize: vertical;
+    min-height: 8rem;
+  }
+
+  /* ---------- RATING BADGE (gold) ---------- */
+
+  .rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(234, 190, 85, 0.1);
+    color: var(--gold);
+    border: 1px solid rgba(234, 190, 85, 0.22);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.01em;
+  }
+
+  /* ---------- THIN DIVIDER ---------- */
+
+  .hairline {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--border),
+      transparent
+    );
+  }
+
+  /* ---------- POSTER / PORTRAIT WRAP ---------- */
+
+  .media-wrap {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: var(--surface-hover);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset;
+  }
+
+  .media-wrap img {
+    transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .media-wrap:hover img {
+    transform: scale(1.06);
+  }
+
+  .media-wrap::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 40%,
+      rgba(0, 0, 0, 0.55) 100%
+    );
+    opacity: 0;
+    transition: opacity 300ms ease;
+  }
+
+  .media-wrap:hover::after {
+    opacity: 1;
+  }
+
+  /* ---------- CHIP / LABEL ---------- */
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface-hover);
+    color: var(--muted-strong);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+}
+
+/* =========================================================
+   SCROLLBAR (WebKit)
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+  border: 2px solid var(--background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-strong);
+}
+
+/* =========================================================
+   UTILITY: hide scrollbar (scrollable but invisible)
+   ========================================================= */
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }

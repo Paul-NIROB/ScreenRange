@@ -132,91 +132,172 @@ export default async function TitlePage({
     <div className="min-h-screen text-foreground">
       <Header />
 
-      <main className="mx-auto max-w-4xl px-6 py-10">
-        <Link href="/" className="text-sm text-muted hover:text-white">
-          ← Back to all titles
+      <main className="mx-auto max-w-7xl px-4 pb-20 pt-6 sm:px-6 sm:pt-10 lg:px-8">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-sm text-muted transition hover:text-foreground"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            <path d="M19 12H5" />
+            <path d="M12 19l-7-7 7-7" />
+          </svg>
+          Back to all titles
         </Link>
 
-        <div className="mt-6 flex flex-col gap-8 md:flex-row">
-          <div className="relative aspect-[2/3] w-full max-w-xs shrink-0 self-start overflow-hidden rounded-lg bg-surface-hover md:sticky md:top-6">
-            {title.poster_path && (
-              <Image
-                src={`https://image.tmdb.org/t/p/w500${title.poster_path}`}
-                alt={title.name}
-                fill
-                sizes="320px"
-                className="object-cover"
-              />
+        <section className="card mt-6 overflow-hidden p-0 sm:mt-8">
+          <div className="flex flex-col gap-8 p-5 sm:p-8 md:flex-row md:gap-10 lg:gap-12">
+            <div className="media-wrap relative mx-auto aspect-[2/3] w-full max-w-[220px] shrink-0 sm:max-w-xs md:mx-0 md:sticky md:top-24">
+              {title.poster_path ? (
+                <Image
+                  src={`https://image.tmdb.org/t/p/w500${title.poster_path}`}
+                  alt={title.name}
+                  fill
+                  sizes="(max-width: 768px) 240px, 320px"
+                  className="object-cover"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center p-6 text-center font-display text-xl text-muted">
+                  {title.name}
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-1 flex-col">
+              <div>
+                <span className="chip">{title.year}</span>
+                <h1 className="mt-4 font-display text-3xl font-bold leading-[1.05] tracking-tight sm:text-5xl md:text-5xl lg:text-6xl">
+                  {title.name}
+                </h1>
+                <p className="mt-3 text-sm leading-relaxed text-muted-strong sm:text-base">
+                  Explore the cast performances, rate each one, add screen-time
+                  estimates, and write a review.
+                </p>
+              </div>
+
+              <div className="mt-8">
+                <AiSummary
+                  titleId={title.id}
+                  initialSummary={summaryRow?.summary ?? null}
+                  isLoggedIn={!!user}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-14 sm:mt-20">
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+                Cast &amp; <span className="text-gold">performances</span>
+              </h2>
+              <p className="mt-1 text-sm text-muted">
+                Click through the buttons below to rate each performance.
+              </p>
+            </div>
+            {cast.length > 0 && (
+              <span className="chip">
+                {cast.length} performer{cast.length === 1 ? "" : "s"}
+              </span>
             )}
           </div>
 
-          <div className="flex-1">
-            <h1 className="text-3xl font-bold">{title.name}</h1>
-            <p className="mt-2 text-muted">{title.year}</p>
-            <AiSummary
-  titleId={title.id}
-  initialSummary={summaryRow?.summary ?? null}
-  isLoggedIn={!!user}
-/>
+          {cast.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-border-strong bg-surface p-10 text-center text-muted">
+              No cast information yet.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              {cast.map((c) => {
+                const stat = stats.get(c.id);
+                const count = stat ? Number(stat.rating_count) : 0;
+                const avg = stat ? Number(stat.avg_score) : 0;
+                const time = timeStats.get(c.id);
+                const timeCount = time ? Number(time.entry_count) : 0;
 
-            <h2 className="mt-10 text-xl font-semibold">Cast</h2>
-
-            {cast.length === 0 ? (
-              <p className="mt-2 text-muted">No cast information yet.</p>
-            ) : (
-              <div className="mt-4 grid grid-cols-2 gap-4">
-                {cast.map((c) => {
-                  const stat = stats.get(c.id);
-                  const count = stat ? Number(stat.rating_count) : 0;
-                  const time = timeStats.get(c.id);
-                  const timeCount = time ? Number(time.entry_count) : 0;
-
-                  return (
-                    <div key={c.id} className="rounded-lg bg-surface p-3">
-                      <div className="relative aspect-square overflow-hidden rounded-md bg-surface-hover">
+                return (
+                  <article key={c.id} className="card group p-0">
+                    <div className="flex gap-4 p-4 sm:gap-5 sm:p-5">
+                      <div className="media-wrap h-24 w-20 shrink-0 ring-1 ring-white/5 sm:h-28 sm:w-24">
                         {c.people.profile_path ? (
                           <Image
                             src={`https://image.tmdb.org/t/p/w185${c.people.profile_path}`}
                             loading="eager"
                             alt={c.people.name}
                             fill
-                            sizes="150px"
+                            sizes="96px"
                             className="object-cover object-top"
                           />
                         ) : (
-                          <div className="flex h-full items-center justify-center text-2xl text-muted">
+                          <div className="flex h-full w-full items-center justify-center font-display text-2xl text-muted sm:text-3xl">
                             {c.people.name.charAt(0)}
                           </div>
                         )}
                       </div>
-                      <p className="mt-2 text-sm font-medium">{c.people.name}</p>
-                      {c.character_name && (
-                        <p className="text-xs text-muted">
-                          as {c.character_name}
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-semibold leading-snug sm:text-base">
+                          {c.people.name}
                         </p>
-                      )}
+                        {c.character_name && (
+                          <p className="mt-0.5 truncate text-xs text-muted sm:text-sm">
+                            as{" "}
+                            <span className="text-foreground/85">
+                              {c.character_name}
+                            </span>
+                          </p>
+                        )}
+                        <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                          {stat ? (
+                            <span
+                              className={
+                                avg >= 8
+                                  ? "text-success"
+                                  : avg >= 5
+                                    ? "text-gold"
+                                    : avg > 0
+                                      ? "text-danger"
+                                      : "text-muted"
+                              }
+                            >
+                              <span className="font-bold">★ {avg.toFixed(1)}</span>
+                              <span className="ml-1 text-xs text-muted">
+                                · {count} {count === 1 ? "rating" : "ratings"}
+                              </span>
+                            </span>
+                          ) : (
+                            <span className="text-xs text-muted">
+                              No ratings yet
+                            </span>
+                          )}
+                          {time ? (
+                            <span className="text-xs text-muted-strong">
+                              ⏱ {Number(time.median_minutes)} min
+                              <span className="ml-1 text-muted">
+                                · {timeCount}{" "}
+                                {timeCount === 1 ? "report" : "reports"}
+                              </span>
+                            </span>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
 
-                      <p className="mt-1 text-xs text-neutral-300">
-                        {stat
-                          ? `★ ${Number(stat.avg_score).toFixed(1)} · ${count} ${
-                              count === 1 ? "rating" : "ratings"
-                            }`
-                          : "No ratings yet"}
-                      </p>
+                    <div className="space-y-4 border-t border-border bg-surface-strong/40 p-4 sm:p-5">
                       <RatingControl
                         castRoleId={c.id}
                         titleId={title.id}
                         initialScore={myScores.get(c.id) ?? null}
                         isLoggedIn={!!user}
                       />
-
-                      <p className="mt-3 border-t border-border pt-2 text-xs text-neutral-300">
-                        {time
-                          ? `⏱ ${Number(time.median_minutes)} min on screen · ${timeCount} ${
-                              timeCount === 1 ? "report" : "reports"
-                            }`
-                          : "No screen time reported yet"}
-                      </p>
                       <ScreenTimeControl
                         castRoleId={c.id}
                         titleId={title.id}
@@ -224,49 +305,76 @@ export default async function TitlePage({
                         isLoggedIn={!!user}
                       />
                     </div>
-                  );
-                })}
-              </div>
-            )}
+                  </article>
+                );
+              })}
+            </div>
+          )}
+        </section>
 
-            <h2 className="mt-12 text-xl font-semibold">Reviews</h2>
-
-            <ReviewForm
-              titleId={title.id}
-              initialBody={myReview?.body ?? null}
-              isLoggedIn={!!user}
-            />
-
-            {reviews.length === 0 ? (
-              <p className="mt-4 text-muted">
-                No reviews yet. Be the first to write one.
+        <section className="mt-14 sm:mt-20">
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+                Reviews
+              </h2>
+              <p className="mt-1 text-sm text-muted">
+                What did you think of the film overall?
               </p>
-            ) : (
-              <ul className="mt-4 space-y-3">
-                {reviews.map((r) => (
-                  <li key={r.id} className="rounded-lg bg-surface p-4">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="font-medium">
-                        {r.author_name}
-                        {user && r.user_id === user.id ? " (you)" : ""}
-                      </span>
-                      <span className="text-xs text-muted">
-                        {new Date(r.created_at).toLocaleDateString("en-IN", {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                        })}
-                      </span>
-                    </div>
-                    <p className="mt-2 whitespace-pre-line text-sm text-neutral-300">
-                      {r.body}
-                    </p>
-                  </li>
-                ))}
-              </ul>
+            </div>
+            {reviews.length > 0 && (
+              <span className="chip">
+                {reviews.length} review{reviews.length === 1 ? "" : "s"}
+              </span>
             )}
           </div>
-        </div>
+
+          <ReviewForm
+            titleId={title.id}
+            initialBody={myReview?.body ?? null}
+            isLoggedIn={!!user}
+          />
+
+          {reviews.length === 0 ? (
+            <div className="mt-6 rounded-2xl border border-dashed border-border-strong bg-surface p-10 text-center text-muted">
+              No reviews yet. Be the first to write one.
+            </div>
+          ) : (
+            <ul className="mt-6 space-y-4">
+              {reviews.map((r) => (
+                <li key={r.id} className="card p-5 sm:p-6">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex min-w-0 items-center gap-3 sm:gap-3.5">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-gold/90 to-gold-muted text-[13px] font-bold text-background ring-1 ring-white/5 sm:h-10 sm:w-10">
+                        {r.author_name.charAt(0).toUpperCase()}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold text-foreground sm:text-base">
+                          {r.author_name}
+                          {user && r.user_id === user.id ? (
+                            <span className="chip ml-2 py-0 align-middle">
+                              you
+                            </span>
+                          ) : null}
+                        </p>
+                        <p className="text-xs text-muted sm:text-sm">
+                          {new Date(r.created_at).toLocaleDateString("en-IN", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="mt-5 whitespace-pre-line text-sm leading-relaxed text-foreground/90 sm:text-[15px]">
+                    {r.body}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
       </main>
     </div>
   );

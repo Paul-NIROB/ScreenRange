@@ -55,43 +55,91 @@ export default function ReviewForm({
     });
   }
 
+  const charCount = text.length;
+  const progress = Math.min((charCount / 1000) * 100, 100);
+  const progressColor =
+    charCount < 10
+      ? "bg-muted/30"
+      : charCount > 900
+        ? "bg-danger"
+        : charCount > 750
+          ? "bg-gold"
+          : "bg-gold/80";
+
   return (
-    <div className="mt-3">
+    <div className="card p-4 sm:p-6">
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div>
+          <p className="font-display text-lg font-semibold tracking-tight sm:text-xl">
+            {hasReview ? "Your review" : "Write a review"}
+          </p>
+          <p className="mt-0.5 text-xs text-muted sm:text-sm">
+            {hasReview
+              ? "Feel free to edit what you wrote."
+              : "Share your take with the community."}
+          </p>
+        </div>
+        <span className="chip">{hasReview ? "editing" : "new"}</span>
+      </div>
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
         maxLength={1000}
-        rows={4}
+        rows={5}
         placeholder="What did you think of this film? (10 to 1000 characters)"
-        className="w-full rounded-lg bg-surface p-3 text-sm outline-none focus:ring-1 focus:ring-purple-500"
+        className="textarea"
       />
-      <div className="mt-2 flex items-center gap-2">
+      <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-surface-hover">
+        <div
+          className={`h-full rounded-full transition-all duration-300 ${progressColor}`}
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+      <div className="mt-4 flex flex-wrap items-center gap-2 sm:gap-3">
         <button
           type="button"
           disabled={isPending || text.trim().length < 10}
           onClick={handleSave}
-          className="rounded-md bg-brand px-4 py-1.5 text-sm font-medium hover:bg-brand-hover disabled:opacity-50"
+          className="btn btn-gold px-4 py-2 text-sm disabled:cursor-not-allowed sm:text-[0.95rem]"
         >
-          {hasReview ? "Update review" : "Post review"}
+          {isPending ? "…" : hasReview ? "Update review" : "Post review"}
         </button>
         {hasReview && (
           <button
             type="button"
             disabled={isPending}
             onClick={handleDelete}
-            className="rounded-md border border-border px-4 py-1.5 text-sm hover:bg-surface-hover disabled:opacity-50"
+            className="btn border-danger/30 bg-danger/5 text-danger hover:bg-danger/10 px-4 py-2 text-sm disabled:cursor-not-allowed sm:text-[0.95rem]"
           >
             Delete
           </button>
         )}
-        <span className="ml-auto text-xs text-muted">
-          {text.length}/1000
+        <span className="ml-auto text-xs font-semibold text-muted sm:text-sm">
+          <span
+            className={
+              charCount < 10
+                ? "text-muted"
+                : charCount > 900
+                  ? "text-danger"
+                  : "text-foreground"
+            }
+          >
+            {charCount}
+          </span>
+          /1000
         </span>
       </div>
+      {text.trim().length > 0 && text.trim().length < 10 && (
+        <p className="mt-3 text-xs text-muted sm:text-sm">
+          Minimum 10 characters. Add {10 - text.trim().length} more.
+        </p>
+      )}
       {status && (
         <p
-          className={`mt-2 text-sm ${
-            status.type === "ok" ? "text-green-400" : "text-red-400"
+          className={`mt-4 rounded-lg px-3 py-2 text-sm font-medium ${
+            status.type === "ok"
+              ? "bg-success/10 text-success"
+              : "bg-danger/10 text-danger"
           }`}
         >
           {status.text}
