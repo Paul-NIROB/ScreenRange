@@ -110,6 +110,65 @@ body {
   min-height: 100vh;
 }
 
+.movie-range-slider {
+  appearance: none;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.movie-range-slider:focus-visible {
+  outline: 2px solid var(--movie-score-color);
+  outline-offset: 4px;
+  border-radius: 9999px;
+}
+
+.movie-range-slider::-webkit-slider-runnable-track {
+  height: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    #ef4444 0%,
+    #facc15 35%,
+    #22c55e 68%,
+    #3b82f6 100%
+  );
+}
+
+.movie-range-slider::-moz-range-track {
+  height: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    #ef4444 0%,
+    #facc15 35%,
+    #22c55e 68%,
+    #3b82f6 100%
+  );
+}
+
+.movie-range-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  margin-top: -7px;
+  border: 3px solid var(--background);
+  border-radius: 50%;
+  background: var(--movie-score-color);
+  box-shadow: 0 0 0 1px var(--movie-score-color), 0 0 14px var(--movie-score-color);
+}
+
+.movie-range-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 3px solid var(--background);
+  border-radius: 50%;
+  background: var(--movie-score-color);
+  box-shadow: 0 0 0 1px var(--movie-score-color), 0 0 14px var(--movie-score-color);
+}
+
 /* =========================================================
    TYPOGRAPHY — cinematic, strong display hierarchy
    ========================================================= */

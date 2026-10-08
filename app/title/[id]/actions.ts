@@ -36,6 +36,33 @@ export async function rateRole(
   return { error: null };
 }
 
+export async function rateMovie(titleId: number, score: number) {
+  if (!Number.isInteger(score) || score < 1 || score > 100) {
+    return { error: "Movie-RangeScore must be a whole number from 1 to 100." };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "Please sign in to rate this movie." };
+  }
+
+  const { error } = await supabase.from("movie_ratings").upsert(
+    { user_id: user.id, title_id: titleId, score },
+    { onConflict: "user_id,title_id" }
+  );
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath(`/title/${titleId}`);
+  return { error: null };
+}
+
 export async function submitScreenTime(
   castRoleId: number,
   titleId: number,

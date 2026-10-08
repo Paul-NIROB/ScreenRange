@@ -11,6 +11,7 @@ import ScoreBadge from "../../../components/ScoreBadge";
 import PerfScoreHero from "../../../components/PerfScoreHero";
 import PerfStatsGrid from "../../../components/PerfStatsGrid";
 import CharacterVsCard from "../../../components/CharacterVsCard";
+import MovieRangeScoreControl from "../../../components/MovieRangeScoreControl";
 
 type CastRow = {
   id: number;
@@ -25,6 +26,11 @@ type CastRow = {
 
 type StatRow = {
   cast_role_id: number;
+  avg_score: number | string;
+  rating_count: number | string;
+};
+
+type MovieStatRow = {
   avg_score: number | string;
   rating_count: number | string;
 };
@@ -84,6 +90,16 @@ export default async function TitlePage({
         )
     );
 
+  const movieStatsPromise = supabase
+    .rpc("get_movie_stats", { p_title_id: title.id })
+    .then((r) => {
+      const row = ((r.data ?? []) as MovieStatRow[])[0];
+      return {
+        averageScore: row ? Number(row.avg_score) : 0,
+        ratingCount: row ? Number(row.rating_count) : 0,
+      };
+    });
+
   const timeStatsPromise = supabase
     .rpc("get_title_screen_time", { p_title_id: title.id })
     .then(
@@ -111,19 +127,36 @@ export default async function TitlePage({
     .maybeSingle()
     .then((r) => r.data ?? null);
 
-  const [cast, user, stats, timeStats, reviews, summaryRow] = await Promise.all(
-    [
-      castPromise,
-      userPromise,
-      statsPromise,
-      timeStatsPromise,
-      reviewsPromise,
-      summaryPromise,
-    ]
-  );
+  const [
+    cast,
+    user,
+    stats,
+    movieStats,
+    timeStats,
+    reviews,
+    summaryRow,
+  ] = await Promise.all([
+    castPromise,
+    userPromise,
+    statsPromise,
+    movieStatsPromise,
+    timeStatsPromise,
+    reviewsPromise,
+    summaryPromise,
+  ]);
 
   let myScores = new Map<number, number>();
   let myMinutes = new Map<number, number>();
+  let myMovieScore: number | null = null;
+  if (user) {
+    const { data: movieRating } = await supabase
+      .from("movie_ratings")
+      .select("score")
+      .eq("title_id", title.id)
+      .maybeSingle();
+    myMovieScore = movieRating?.score ?? null;
+  }
+
   if (user && cast.length > 0) {
     const roleIds = cast.map((c) => c.id);
 
@@ -583,6 +616,16 @@ export default async function TitlePage({
               </div>
             </>
           )}
+        </section>
+
+        <section className="mt-14 sm:mt-20" aria-label="Movie rating">
+          <MovieRangeScoreControl
+            titleId={title.id}
+            averageScore={movieStats.averageScore}
+            ratingCount={movieStats.ratingCount}
+            initialScore={myMovieScore}
+            isLoggedIn={!!user}
+          />
         </section>
 
         <section className="mt-14 sm:mt-20">
