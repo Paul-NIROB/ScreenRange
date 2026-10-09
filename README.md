@@ -120,4 +120,4 @@ This product uses the TMDB API but is not endorsed or certified by TMDB.
 
 ## Author
 
-Built by **[NIROB PAUL]**. [LinkedIn](https://www.linkedin.com/in/your-profile) · [Email](mailto:Nirobpaulgetit@gmail.com)
+Built by **[NIROB PAUL]**. [LinkedIn](https://www.linkedin.com/in/nirob-paul-9630a028b/) · [Email](mailto:Nirobpaulgetit@gmail.com)
