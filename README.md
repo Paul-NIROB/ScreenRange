@@ -7,11 +7,17 @@ ScreenRange is a community site where people rate individual acting performances
 **Live demo:** https://screen-range.vercel.app
 **Source:** https://github.com/Paul-NIROB/ScreenRange
 
-![Home page](docs/home.png)
+![ScreenRange Home Page](docs/home.png.png)
 
-| Movie page | Rankings | AI summary |
-|---|---|---|
-| ![Movie page](docs/movie.png) | ![Rankings](docs/rankings.png) | ![AI summary](docs/ai-summary.png) |
+## Screenshots
+
+| Movie Performance Ratings                  | RangeScore                             | AI Summary                            |
+| ------------------------------------------ | -------------------------------------- | ------------------------------------- |
+| ![Movie Ratings](docs/movierating.png.png) | ![RangeScore](docs/rangescore.png.png) | ![AI Summary](docs/aisummary.png.png) |
+
+### Character Performance Ratings
+
+![Character Ratings](docs/characterrating.png.png)
 
 ## Features
 
