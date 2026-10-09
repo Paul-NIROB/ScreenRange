@@ -13,7 +13,7 @@ ScreenRange is a community site where people rate individual acting performances
 
 | Movie Performance Ratings                  | RangeScore                             | AI Summary                            |
 | ------------------------------------------ | -------------------------------------- | ------------------------------------- |
-| ![Movie Ratings](docs/movierating.png.png) | ![RangeScore](docs/rangescore.png.png) | ![AI Summary](docs/aisummary.png.png) |
+| ![Movie Ratings](docs/movierating.png.png) | ![RangeScore](docs/rangescore.png.png) | ![AI Summary](docs/aisummery.png.png)
 
 ### Character Performance Ratings
 
